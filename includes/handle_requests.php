@@ -24,7 +24,15 @@ if (isset($_POST["form-name"])) {
             $newsController->edit_news_post($_POST, $_FILES);
         break;
 
-        
+        // case 'add_advertisement':
+        //     $adsController = new AdvertisementController($db);
+        //     $adsController->add_advertisement();
+        // break;
+            
+        // case 'edit_advertisement':
+        //     $adsController = new AdvertisementController($db);
+        //     $adsController->edit_advertisement($_POST, $_FILES);
+        // break;
         
         case 'bannerimg':
             $BannerController = new BannerImageController($db);
