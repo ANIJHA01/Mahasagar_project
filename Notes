@@ -1,0 +1,56 @@
+Steps to follow from now on : 
+
+1. Reform the files and folder structure : 
+
+- Backup and delete all the files from Includes folder.
+- Keep only 2 files as follows : 
+--- constants.php
+--- config.php
+--- function.php
+
+
+2. Reform includes as per the decided flow.
+
+- Flow revision : 
+--- index.php 
+	> constants.php 
+	> config.php (Where $db is made ready) 
+	> functions.php 
+	> header.php 
+    > {switch case will decide what page to load}
+    > footer.php
+
+- Adjust the include_once
+
+
+3. Edit all the forms availbel and make sure that they all have a hidden filed named "form-name" with different value. Make sure no form has the same form-name.
+
+4. edit the functions.php and create a class with functions to perform the oprtations from all the available forms.
+
+5. Transcer the code from the backup includes filder files into this single functions.php file. Make sure thet are getting copied to the correct functions in the class.
+
+6. Test all the forms.
+
+
+
+Table - "mhs_meta"
+    |- id
+    |- meta_key
+    |- meta_value
+    |- desc
+
+============================================
+
+id      |       meta_key        |       meta_value      |       desc
+
+1       |     banner_ad_img     |           null        |       null
+
+============================================
+
+SELECT meta_value FROM mhs_meta WHERE meta_key = banner_ad_img;
+
+UPDATE mhs_meta SET meta_value = $file_name WHERE meta_key = banner_ad_img;
+
+UPDATE mhs_meta SET meta_value = '' WHERE meta_key = banner_ad_img;
+
+============================================

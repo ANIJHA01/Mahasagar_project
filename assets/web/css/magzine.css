@@ -1,0 +1,43 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+.wrapper .sidebar .sidebar_inner{
+    list-style-type: none;
+} 
+/* magzine.css */
+
+.menu {
+    list-style-type: none; /* Removes default list-style */
+    padding: 5px;
+    margin: 10px;
+}
+
+.menu > .menu-item {
+    text-decoration: none; /* Removes underline from links */
+}
+
+.menu > .menu-item:hover {
+    background-color: #f0f0f0; /* Background color on hover */
+}
+
+.menu .sub-menu {
+    display: none; /* Initially hide submenu */
+    padding-left: 20px; /* Add some indentation to submenu */
+}
+
+.menu .menu-child:hover .sub-menu {
+    display: block; /* Display submenu on hover */
+    transition: display 0.3s ease; /* Smooth transition */
+}
+/* magzine.css */
+
+.title-cover .title{
+    /* width: 100%; */
+    background-color: black; /* Set background color to black */
+    color: white; /* Set text color to white */
+    text-align: center; /* Align text to the center */
+    padding: 10px; /* Add padding for better readability */
+}
+

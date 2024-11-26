@@ -1,0 +1,109 @@
+
+/* header-style */
+    .header-style{
+        width: 100%;
+        border: 1px #ff0000 solid;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+/* Upload img btn */
+ /* Style container to resemble a button */
+    .upload-container {
+        width: 180px;
+        height: 50px;
+        background-color: rgba(237, 22, 22, 0.881);
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 50px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px black;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+/* Hide the file input */
+    .upload-container input[type="file"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+    .upload-container.submitting {
+        pointer-events: none; /* Disable interactions */
+        opacity: 0.6; /* Visual feedback for disabled state */
+    }
+
+/* image Edit */
+    #bannerAdImageUpload{
+        position: absolute; 
+        top: 25px;
+        right: 10px; 
+        width: 30px;
+        height: 30px; 
+        border-radius: 100%; 
+        overflow: hidden; 
+        box-shadow: rgba(0, 225, 255, 0.844) 0px 2px 4px 0px, rgba(4, 0, 255, 0.844) 0px 2px 16px 0px;
+        transition: all 1s;
+    }
+    #bannerAdImageUpload:hover{
+        box-shadow: rgba(0, 225, 255, 0.844) 0px 2px 4px 0px, rgba(4, 0, 255, 0.844) 0px 2px 16px 0px;
+    }
+/* Button */
+    .addImgBtn{
+        position: absolute; 
+        top: 0; 
+        height: 100%; 
+        width: 100%;
+    }
+/* Input */
+    .addImgInput{
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+    }
+
+/* image delete */
+    #bannerAdImagedelete{
+        position: absolute;
+        top: 25px;
+        right: 60px;
+        width: 30px;
+        height: 30px;
+        border-radius: 100%;
+        box-shadow: rgba(0, 255, 187, 0.844) 0px 2px 4px 0px, rgba(234, 0, 255, 0.844) 0px 2px 16px 0px;
+        overflow: hidden;
+        transition: all 1s;
+    }
+    #bannerAdImagedelete:hover{
+        box-shadow: rgba(4, 0, 255, 0.844) 0px 2px 4px 0px, rgba(0, 225, 255, 0.844) 0px 2px 16px 0px;
+    }
+
+
+/* Delete Button */
+    .deleteImgBtn{
+        position: absolute; 
+        top: 0; 
+        height: 100%; 
+        width: 100%;
+    }
+
+/* Delete Input */
+    .deleteImgInput{
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+    }
+
