@@ -54,3 +54,41 @@ UPDATE mhs_meta SET meta_value = $file_name WHERE meta_key = banner_ad_img;
 UPDATE mhs_meta SET meta_value = '' WHERE meta_key = banner_ad_img;
 
 ============================================
+
+
+Strategy for Implementing a Commenting: 
+============================================
+1. Setup the Comment Section:
+    Create input fields for:
+        User Name       |       User Email      |       Comment Text
+    Design and edit the Submit Button:
+        |-Add animations or visual effects to enhance user experience.
+        |-Assign the form a unique identifier, such as userComment, to differentiate it from other forms on the site.
+
+============================================
+2. Handle the Submit Button Functionality:
+    When the submit button is clicked:
+        |-The form data is sent using the POST method.
+        |-The request will be processed in the includes folder in a file named handle_request.php.
+        |-Inside handle_request.php, use a switch-case structure based on the form_name field to handle different types of requests.
+============================================
+3. Create a Function to Save Comments:
+    Inside the includes folder, create a file named Comments.php.
+    Define a function named userComment in this file:
+        |-Fetch the user’s name, email, and comment from the POST request.
+        |-Insert this data into the database table named article_comments.
+============================================
+4. Database Table Structure:
+    Table Name: article_comments
+    Columns:
+        |-id (Primary Key, Auto Increment)
+        |-article_name (User’s Name)
+        |-article_email (User’s Email)
+        |-article_comment (Comment Text)
+        |-created_at (Timestamp of when the comment was added)
+============================================
+5. Final Implementation Workflow:
+    1. User fills out the comment form and clicks the Submit button.
+    2. The form sends data via POST to handle_request.php in the includes folder.
+    3. The handle_request.php file identifies the form_name as userComment and email the corresponding function in Comments.php.
+    4. The userComment function in Comments.php processes the data and saves it to the article_comments database table.

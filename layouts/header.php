@@ -409,52 +409,52 @@
 							</div>
 							<div class="col-12 col-md-8 header p-0 py-md-3">
 							<div class="col-3 col-md-2 header p-0 py-md-1 position-relative header-style">
-                            <?php
-                            // $BannerAdlimit = 1;
-                            // $sqlImage = "SELECT * FROM banner_ad_images ORDER BY id DESC LIMIT {$BannerAdlimit}";
-							$sqlImage = "SELECT meta_value FROM mhs_meta WHERE meta_key = 'banner_ad_img'";
-                            $resultImage = mysqli_query($db, $sqlImage) or die("Query Failed: " . mysqli_error($db));
+								<?php
+								$sqlImage = "SELECT id, meta_value FROM mhs_meta WHERE meta_key = 'banner_ad_img'";
+								$resultImage = mysqli_query($db, $sqlImage) or die("Query Failed: " . mysqli_error($db));
 
-                            if (mysqli_num_rows($resultImage) > 0) {
-                                while ($row = mysqli_fetch_assoc($resultImage)) {
-                            ?>
-                                    <!-- Display the Image -->
-                                    <figure class="alith_post_thumb">
-                                        <a href='/singleid=<?php echo $row['id']; ?>'>
-                                            <img class="w-100" src="<?= NEWS_UPLOAD_URL . $row['meta_value']; ?>" alt="Banner Image">
-                                        </a>
-                                    </figure>
-                                    <!-- Edit Form -->
-                                    <form id="editBannerAdImgForm" action="" method="POST" enctype="multipart/form-data">
-                                        <div id="bannerAdImageUpload">
-											<span class="addImgBtn"><i class="fa fa-edit"></i></span>
-                                            <input type="file" name="bannerEditImg" class="addImgInput" onchange="handleBannerEditImg(event)"/>	
-                                        </div>
-										<input type="hidden" name="form-name" value="bannereditimg" />
-                                    </form>
-                                    <!-- Delete Form -->
-									<div id="bannerAdImagedelete">
-										<a href='<?= SITE_URL ?>banneraddelete?id=<?php echo $row["id"]; ?>'>
-											<button class="deleteImgBtn"><i class="fa fa-trash"></i></button>
-										</a>
-									</div>
-                            <?php
-                                }
-                            } else {
-                            ?>
-                                <!-- Upload Form -->
-                                <form id="manageBannerAdImgForm" action="" method="POST" enctype="multipart/form-data">
-                                    <div class="upload-container">
-										<span>+ Upload Ad Image</span>
-                                        <input type="file" name="adImage" onchange="handleBannerAdImg(event)" />
-                                    </div>
-                                    <input type="hidden" name="form-name" value="bannerimg" />
-                                </form>
-                            <?php
-                            }
-                            ?>
-                        </div>
-                        </div>
+								if (mysqli_num_rows($resultImage) > 0) {
+									while ($row = mysqli_fetch_assoc($resultImage)) {
+										if (!empty($row['meta_value'])) {
+								?>
+											<figure class="alith_post_thumb">
+												<a href='/singleid=<?php echo $row['id']; ?>'>
+													<img class="w-100" src="<?= NEWS_UPLOAD_URL . $row['meta_value']; ?>" alt="Banner Image">
+												</a>
+											</figure>
+											<!-- Edit Form -->
+											<form id="editBannerAdImgForm" action="" method="POST" enctype="multipart/form-data">
+												<div id="bannerAdImageUpload">
+													<span class="addImgBtn"><i class="fa fa-edit"></i></span>
+													<input type="file" name="bannerEditImg" class="addImgInput" onchange="handleBannerEditImg(event)" />
+												</div>
+												<input type="hidden" name="form-name" value="bannereditimg" />
+											</form>
+											<!-- Delete Form -->
+											<div id="bannerAdImagedelete">
+												<a href='<?= SITE_URL ?>banneraddelete?id=<?php echo $row["id"]; ?>'>
+													<button class="deleteImgBtn"><i class="fa fa-trash"></i></button>
+												</a>
+											</div>
+								<?php
+										} else {
+								?>
+											<!-- Upload Form -->
+											<form id="manageBannerAdImgForm" action="" method="POST" enctype="multipart/form-data">
+												<div class="upload-container">
+													<span>+ Upload Ad Image</span>
+													<input type="file" name="adImage" onchange="handleBannerAdImg(event)" />
+												</div>
+												<input type="hidden" name="form-name" value="bannerimg" />
+											</form>
+								<?php
+										}
+									}
+								}
+								?>
+							</div>
+                        	</div>
+						</div>
 						</div>
 					</div>
 				</div>
