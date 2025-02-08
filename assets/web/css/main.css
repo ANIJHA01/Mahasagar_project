@@ -362,6 +362,12 @@ text-transform: uppercase;
 	display: inline-block;
 	padding: 5px 10px;
 }
+
+.home_page_image_size img{
+	height: 650px;
+	width: 100%;
+}
+
 .alith_post_thumb_big .post_meta_categories_label {
 	position: absolute;
 	right: 15px;

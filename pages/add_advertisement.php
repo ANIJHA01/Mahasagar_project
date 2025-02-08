@@ -15,7 +15,7 @@
                                             <input id="ads_title" name="ads_title" class="form-control" autocomplete="off" required>
                                         </div>
                                         <div class="form-group mb-4">
-                                            <label for="ads_added">Added_By</label>
+                                            <label for="ads_added">page-author</label>
                                             <input id="ads_added" name="ads_added" class="form-control" autocomplete="off" required>
                                         </div>
                                         <div class="form-group mb-4">

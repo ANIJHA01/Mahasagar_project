@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php';
+// require 'vendor/autoload.php';
 
 // Load .env variables
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -11,9 +11,8 @@ $db_user = $_ENV['DB_USERNAME'];
 $db_pass = $_ENV['DB_PASSWORD'];
 $db_name = $_ENV['DB_DATABASE'];
 
-$db = new mysqli($db_host, $db_user, $db_pass, $db_name);
+$db = new \mysqli($db_host, $db_user, $db_pass, $db_name);
 
 if ($db->connect_error) {
-    die("Connection failed: " . $db->connect_error);
+    die("Connection failed: {$db->connect_error}");
 }
-?>

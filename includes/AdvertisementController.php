@@ -57,24 +57,41 @@ class AdvertisementController {
     }    
 
     private function handle_file_upload($upload_path, $input_name) {
-
         if (!empty($_FILES[$input_name]['name'])) {
             $file_name = $_FILES[$input_name]['name'];
             $file_tmp = $_FILES[$input_name]['tmp_name'];
+            $file_size = $_FILES[$input_name]['size'];
             $file_ext_array = explode('.', $file_name);
             $file_ext = strtolower(end($file_ext_array));
             $extensions = array("jpeg", "jpg", "png");
             $errors = [];
-
+    
             if (!in_array($file_ext, $extensions)) {
-                $errors[] = "This extension file is not allowed; please choose a JPG or PNG file.";
+                $errors[] = "This extension file is not allowed. Please choose a JPG or PNG file.";
             }
-            
-            if (empty($errors)) {
-                if (!is_dir($upload_path)) { mkdir($upload_path, 0777, true); }
-                move_uploaded_file($file_tmp, $upload_path . $file_name);
+            $max_size = 1 * 1024 * 1024;
+            if ($file_size > $max_size) {
+                $errors[] = "File size exceeds the 1MB limit.";
+            }
+            list($width, $height) = getimagesize($file_tmp);
+            $min_width = 1600;
+            $min_height = 250;
+            if ($width < $min_width || $height < $min_height) {
+                $errors[] = "Image dimensions are too small. Minimum size is 1600x250 pixels.";
+            }
+            if (!empty($errors)) {
+                $_SESSION['status'] = implode(" ", $errors);
+                $_SESSION['status_code'] = "error";
+                return false;
+            }
+            if (!is_dir($upload_path)) {
+                mkdir($upload_path, 0777, true);
+            }
+            if (move_uploaded_file($file_tmp, $upload_path . $file_name)) {
                 return $file_name;
             } else {
+                $_SESSION['status'] = "Failed to upload file.";
+                $_SESSION['status_code'] = "error";
                 return false;
             }
         }
@@ -93,11 +110,11 @@ class AdvertisementController {
         }
         $title = isset($_POST['ads_title']) ? $this->sanitize($_POST['ads_title']) : '';
         $content = isset($_POST['ads_content']) ? $this->sanitize($_POST['ads_content']) : '';
-        $added_by = isset($_POST['added_by']) ? $this->sanitize($_POST['added_by']) : '';
+        $page-author = isset($_POST['page-author']) ? $this->sanitize($_POST['page-author']) : '';
         $status = 1;
 
-        $query = "INSERT INTO news_ads(ads_title, ads_content, ads_image, added_by, ads_status)
-        VALUES('{$title}', '{$content}', '{$file_name}', '{$added_by}', '{$status}');";
+        $query = "INSERT INTO news_ads(ads_title, ads_content, ads_image, page-author, ads_status)
+        VALUES('{$title}', '{$content}', '{$file_name}', '{$page-author}', '{$status}');";
         $response = json_decode($this->execute_db_query($query), true);
 
         if ($response["status"] == true) {
