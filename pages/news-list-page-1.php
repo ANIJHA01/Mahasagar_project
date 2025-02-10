@@ -151,7 +151,7 @@
 					<div class="sidebar_right">
 					<div class="sidebar-widget animate-box">
 							<div class="widget-title-cover">
-								<h4 class="widget-title"><span>Popular Articles</span></h4>
+								<h4 class="widget-title"><span>news-list 154 Popular Articles</span></h4>
 							</div>
 							<div class="latest_style_1">
 								<div class="latest_style_1_item">
@@ -217,7 +217,7 @@
 
 						<div class="sidebar-widget animate-box">
 							<div class="widget-title-cover">
-								<h4 class="widget-title"><span>Trending</span></h4>
+								<h4 class="widget-title"><span>Trending 220 (news_list-page-1.php)</span></h4>
 							</div>
 							<div class="latest_style_2">
 								<div class="latest_style_2_item_first">

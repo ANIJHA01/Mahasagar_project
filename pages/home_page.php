@@ -1,50 +1,52 @@
 <div class="container-fluid">
 	<div class="container animate-box">
-		<div class="row">
-			<div class="owl-carousel owl-theme js carausel_slider section_margin" id="slider-small">
-
+		<div class="row main-header">
+			<div class="owl-carousel owl-theme js carausel slider section_margin" id="slider-small">
 				<?php
-				$limit = 4;
-
-				$sql = "SELECT * FROM news_posts ORDER BY id DESC LIMIT {$limit}";
-
-				$result = mysqli_query($db, $sql) or die("Query Failed: " . mysqli_error($db));
-
-				if(mysqli_num_rows($result) > 0){
-    				while($row = mysqli_fetch_assoc($result)){
+					$sql = "SELECT * FROM news_posts ORDER BY id DESC";
+					$result = mysqli_query($db, $sql) or die("Query Failed: " . mysqli_error($db));
+					if(mysqli_num_rows($result) > 0){
+						while($row = mysqli_fetch_assoc($result)){
 				?>
-        				<div class="item px-2">
-            				<div class="alith_latest_trading_img_position_relative">
-                				<figure class="alith_post_thumb">
-                    				<a href='/singleid=<?php echo $row['id']; ?>'>
-                        			<img src="<?=NEWS_UPLOAD_URL.$row['news_banner'];?>" alt="<?php echo $row['news_title']; ?>" />
-                    				</a>
-                				</figure>
-                				<div class="alith_post_title_small">
-                    				<a href='<?=SITE_URL?>news?id=<?php echo $row['id']; ?>'>
-                        				<strong><?=$row['news_title']?></strong>
-                    				</a>
-                    				<p class="meta"><span><?php echo $row['added_dt']; ?></span> <span>268 views</span></p>
-									<?php if(isset($_SESSION["user_id"]) && isset($_SESSION["role"]) && $_SESSION["role"] == 1) { ?>
-										<div id="RecentPageEdit">
-											<a href='<?=SITE_URL?>edit?id=<?php echo $row["id"]; ?>'>
-											<button class="addImgBtn"><i class="fa fa-edit"></i></button>
-											</a>
-										</div>
-										<div id="RecentPagedelete">
-											<a href='<?=SITE_URL?>delete?id=<?php echo $row["id"]; ?>'>
-												<button class="addImgBtn"><i class="fa fa-trash"></i></button>
-											</a>
-										</div>
-									<?php } ?>
-                				</div>
-            				</div>
-        				</div>
+					<div class="item px-2">
+						<div class="alith_latest_trading_img_position_relative">
+							<figure class="alith_post_thumb">
+								<a href='<?=SITE_URL?>news?id=<?php echo $row['id']; ?>'>
+									<img src="<?=NEWS_UPLOAD_URL.$row['news_banner'];?>" alt="<?php echo $row['news_title']; ?>" />
+								</a>
+							</figure>
+							<div class="alith_post_title_small">
+								<a href='<?=SITE_URL?>news?id=<?php echo $row['id']; ?>'>
+									<strong><?=$row['news_title']?></strong>
+								</a>
+								<p class="meta"><span><?php echo $row['added_dt']; ?></span> <span><?= $row['news_views']; ?> Views</span></p>
+							</div>
+							<?php if(isset($_SESSION["user_id"]) && isset($_SESSION["role"]) && $_SESSION["role"] == 1) { ?>
+							<div class="recent-page-btn">
+								 	<div class="RecentPageView">
+									 	<a href='<?=SITE_URL?>news?id=<?php echo $row["id"]; ?>'>
+											<button class="addImgBtn"><i class="bi bi-eye"></i></button>
+										</a>
+									</div>						
+									<div id="RecentPageEdit">
+										<a href='<?=SITE_URL?>edit?id=<?php echo $row["id"]; ?>'>
+											<button class="addImgBtn"><i class="bi bi-pencil-square"></i></button>
+										</a>
+									</div>
+									<div id="RecentPagedelete">
+										<a href='<?=SITE_URL?>delete?id=<?php echo $row["id"]; ?>'>
+											<button class="addImgBtn"><i class="bi bi-trash"></i></button>
+										</a>
+									</div>
+							</div>
+							<?php } ?>
+						</div>
+					</div>
 				<?php
-    				}
-				} else {
-    				echo "<div>No news posts found.</div>";
-				}
+						}
+					} else {
+						echo "<div>No news posts found.</div>";
+					}
 
 				?>
 			</div>
@@ -56,227 +58,112 @@
 		<div class="primary margin-15">
 			<div class="row">
 				<div class="col-md-8">
-					<div class="owl-carousel owl-theme js section_margin line_hoz animate-box"
-						id="slideshow_face">
+					<!-- Button trigger modal -->
+					<?php if(isset($_SESSION["user_id"]) && isset($_SESSION["role"]) && $_SESSION["role"] == 1) { ?>
+						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCarouselModal">
+							Edit Carousel Images
+						</button>
+					<?php } ?>
+					<?php 
+					
+						$sql = "SELECT * FROM news_posts ORDER BY id DESC";
+						$result = mysqli_query($db, $sql) or die("Query Failed:" . mysqli_error($db));
+						if(mysqli_num_rows($result)>0){
+					?>
+					<div class="owl-carousel owl-theme js section_margin line_hoz animate-box" id="slideshow_face">
+						<?php
+							while($row = mysqli_fetch_assoc($result)){
+						?>
 						<div class="item">
 							<figure class="alith_post_thumb_big">
-								<span class="post_meta_categories_label">Legal, Blog</span>
-								<a href='/single'><img src="<?=BASE_URL?>web/images/slideshow.jpg"
-										alt="" /></a>
+								<span class="post_meta_categories_label">home_page 71 line, Blog</span>
+								<div class="home_page_image_size">
+									<img src="<?=NEWS_UPLOAD_URL.$row['news_banner'] ?>" alt="<?= $row['news_title'] ?>"/>
+								</div>
 							</figure>
 							<h3 class="alith_post_title animate-box" data-animate-effect="fadeInUp">
-								<a href='/single'>Lorem ipsum dui sollic itudin praesent ut mollis primiseros torquent fames</a>
+								<a href='/single'><?= $row["news_title"] ?></a>
 							</h3>
 							<div class="alith_post_content_big">
 								<div class="row">
-									<div class="col-md-4 col-sm-12">
+									<div class="col-md-4 col-sm-5">
 										<div class="post_meta_center animate-box">
 											<p><a href='/page-author'><img src="<?=BASE_URL?>web/images/author-avatar.png" alt="author details" /></a></p>
-											<p><a class='author' href='/page-author'><strong>Steven Job</strong></a></p>
-											<span class="post_meta_date">19 Sep, 2023</span>
+											<p><a class='author' href='/page-author'><strong><?= $row['page_author'] ?></strong></a></p>
+											<span class="post_meta_date"><?= $row['modified_dt'] ?></span>
 										</div>
 									</div>
 									<div class="col-md-8 col-sm-12 animate-box">
-										<p class="alith_post_except">Is very common and rather normal for
-											blogging beginners to be highly perplexed when it comes to
-											selecting a theme for their blog. There are a plethora of free
-											as well as paid options.</p>
+										<p class="alith_post_except"><?= $row['news_description'] ?></p>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="item">
-							<figure class="alith_post_thumb_big">
-								<span class="post_meta_categories_label">Fashion, Men</span>
-								<a href="#"><img src="<?=BASE_URL?>web/images/slideshow.jpg" alt="" /></a>
-							</figure>
-							<h3 class="alith_post_title animate-box" data-animate-effect="fadeInUp">
-								<a href='/single'>Lorem ipsum dui sollic itudin praesent ut mollis primis
-									eros torquent fames</a>
-							</h3>
-							<div class="alith_post_content_big">
-								<div class="row">
-									<div class="col-md-4 col-sm-12">
-										<div class="post_meta_center animate-box">
-											<p><a href='/page-author'><img
-														src="<?=BASE_URL?>web/images/author-avatar.png"
-														alt="author details" /></a></p>
-											<p><a class='author' href='/page-author'><strong>Steven
-														Job</strong></a></p>
-											<span class="post_meta_date">21 Sep, 2023</span>
-										</div>
-									</div>
-									<div class="col-md-8 col-sm-12 animate-box">
-										<p class="alith_post_except">Is very common and rather normal for
-											blogging beginners to be highly perplexed when it comes to
-											selecting a theme for their blog. There are a plethora of free
-											as well as paid options.</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="item">
-							<figure class="alith_post_thumb_big">
-								<span class="post_meta_categories_label">Entertainment, Style</span>
-								<a href="#"><img src="https://cdn.pixabay.com/photo/2024/02/27/00/13/heliconia-8599119_1280.jpg" alt="natureimg1" /></a>
-							</figure>
-							<h3 class="alith_post_title animate-box" data-animate-effect="fadeInUp">
-								<a href='/single'>Lorem ipsum dui sollic itudin praesent ut mollis primis
-									eros torquent fames</a>
-							</h3>
-							<div class="alith_post_content_big">
-								<div class="row">
-									<div class="col-md-4 col-sm-12">
-										<div class="post_meta_center animate-box">
-											<p><a href='/page-author'><img
-														src="<?=BASE_URL?>web/images/author-avatar.png"
-														alt="author details" /></a></p>
-											<p><a class='author' href='/page-author'><strong>Steven
-														Job</strong></a></p>
-											<span class="post_meta_date">23 Sep, 2023</span>
-										</div>
-									</div>
-									<div class="col-md-8 col-sm-12 animate-box">
-										<p class="alith_post_except">Is very common and rather normal for
-											blogging beginners to be highly perplexed when it comes to
-											selecting a theme for their blog. There are a plethora of free
-											as well as paid options.</p>
-									</div>
-								</div>
-							</div>
-						</div>
+						<?php 
+							}
+						?>
 					</div>
+					<?php 
+						}else{
+							echo "No news posts found.";
+						}
+					?>
 					<div class="post_list post_list_style_1">
 						<div class="alith_heading">
 							<h2 class="alith_heading_patern_2">Recent Posts</h2>
 						</div>
-						<article class="row section_margin animate-box">
-							<div class="col-md-3 animate-box">
-								<figure class="alith_news_img"><a href='/single'><img
-											src="<?=BASE_URL?>web/images/thumb_medium.png" alt="" /></a>
-								</figure>
-							</div>
-							<div class="col-md-9 animate-box">
-								<h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad minim
-										veniam</a></h3>
-								<div class="post_meta">
-									<a class='meta_author_avatar' href='/page-author'><img
-											src="<?=BASE_URL?>web/images/author-avatar.png"
-											alt="author details" /></a>
-									<span class="meta_author_name"><a class='author'
-											href='/page-author'>Steven Job</a></span>
-									<span class="meta_categories"><a href="archive.html">Politics</a>, <a
-											href="archive.html">News</a></span>
-									<span class="meta_date">18 Sep, 2023</span>
+						<?php
+							$limit3 = 6;
+							$sidebar = "SELECT np.id, np.news_title, np.news_banner, np.page_author, np.added_dt, mc.cat_id, mc.cat_name 
+										FROM news_posts np
+										LEFT JOIN main_categories mc ON np.category = mc.cat_id
+										ORDER BY np.id DESC LIMIT {$limit3}";
+
+							$result = mysqli_query($db, $sidebar) or die("Query Failed: " . mysqli_error($db));
+
+							if(mysqli_num_rows($result) > 0){
+								while($row = mysqli_fetch_assoc($result)){	
+										$categoryID = $row['cat_id'];
+										$categoryName = $row['cat_name'];
+
+										$categoryURL = SITE_URL . "category?cid=" . $categoryID;						
+						?>
+							<article class="row section_margin animate-box">
+								<div class="col-md-3 animate-box">
+									<figure class="alith_news_img">
+										<a href='<?=SITE_URL?>news?id=<?= $row['id']; ?>'>
+											<img src="<?=NEWS_UPLOAD_URL.$row['news_banner'];?>" alt="<?= $row['news_title']; ?>" />
+										</a>
+									</figure>
 								</div>
-							</div>
-						</article>
-						<article class="row section_margin animate-box">
-							<div class="col-md-3 animate-box">
-								<figure class="alith_news_img"><a href='/single'><img
-											src="<?=BASE_URL?>web/images/thumb_medium.png" alt="" /></a>
-								</figure>
-							</div>
-							<div class="col-md-9 animate-box">
-								<h3 class="alith_post_title"><a href='/single'>Letraset sheets containing
-										Lorem Ipsum passages, and more recently</a></h3>
-								<div class="post_meta">
-									<a class='meta_author_avatar' href='/page-author'><img
-											src="<?=BASE_URL?>web/images/author-avatar.png"
-											alt="author details" /></a>
-									<span class="meta_author_name"><a class='author'
-											href='/page-author'>Steven Job</a></span>
-									<span class="meta_categories"><a href="archive.html">Politics</a>, <a
+								<div class="col-md-9 animate-box">
+									<h3 class="alith_post_title">
+										<a href='<?=SITE_URL?>news?id=<?= $row['id']; ?>'>
+											<strong><?=$row['news_title']?></strong>
+										</a>
+									</h3>
+									<div class="post_meta">
+										<a class='meta_author_avatar' href='/page-author'>
+											<img src="<?=BASE_URL?>web/images/author-avatar.png" alt="author details" />
+										</a>
+										<span class="meta_author_name">
+											<a href='<?=SITE_URL?>news?id=<?php echo $row['id']; ?>'>
+												<?= htmlspecialchars($row['page_author']); ?>
+											</a>
+										</span>
+										
+										<span class="meta_categories"><a href="<?php echo $categoryURL; ?>">
+												<?= $row['cat_name']; ?>
+											</a>, <a
 											href="archive.html">News</a></span>
-									<span class="meta_date">18 Sep, 2023</span>
+										<span class="meta_date"><?= $row['added_dt']; ?></span>
+									</div>
 								</div>
-							</div>
-						</article>
-						<article class="row section_margin animate-box">
-							<div class="col-md-3 animate-box">
-								<figure class="alith_news_img"><a href='/single'><img
-											src="<?=BASE_URL?>web/images/thumb_medium.png" alt="" /></a>
-								</figure>
-							</div>
-							<div class="col-md-9 animate-box">
-								<h3 class="alith_post_title"><a href='/single'>There are many variations of
-										passages of Lorem Ipsum available, but the majority have
-										suffered</a></h3>
-								<div class="post_meta">
-									<a class='meta_author_avatar' href='/page-author'><img
-											src="<?=BASE_URL?>web/images/author-avatar.png"
-											alt="author details" /></a>
-									<span class="meta_author_name"><a class='author'
-											href='/page-author'>Steven Job</a></span>
-									<span class="meta_categories"><a href="archive.html">Politics</a>, <a
-											href="archive.html">News</a></span>
-									<span class="meta_date">18 Sep, 2023</span>
-								</div>
-							</div>
-						</article>
-						<article class="row section_margin animate-box">
-							<div class="col-md-3 animate-box">
-								<figure class="alith_news_img"><a href='/single'><img
-											src="<?=BASE_URL?>web/images/thumb_medium.png" alt="" /></a>
-								</figure>
-							</div>
-							<div class="col-md-9 animate-box">
-								<h3 class="alith_post_title"><a href='/single'>It uses a dictionary of over
-										200 Latin words, combined</a></h3>
-								<div class="post_meta">
-									<a class='meta_author_avatar' href='/page-author'><img
-											src="<?=BASE_URL?>web/images/author-avatar.png"
-											alt="author details" /></a>
-									<span class="meta_author_name"><a class='author'
-											href='/page-author'>Steven Job</a></span>
-									<span class="meta_categories"><a href="archive.html">Politics</a>, <a
-											href="archive.html">News</a></span>
-									<span class="meta_date">18 Sep, 2023</span>
-								</div>
-							</div>
-						</article>
-						<article class="row section_margin animate-box">
-							<div class="col-md-3 animate-box">
-								<figure class="alith_news_img"><a href='/single'><img
-											src="<?=BASE_URL?>web/images/thumb_medium.png" alt="" /></a>
-								</figure>
-							</div>
-							<div class="col-md-9 animate-box">
-								<h3 class="alith_post_title"><a href='/single'>Reading is not only informed
-										by what’s going on with us at that moment</a></h3>
-								<div class="post_meta">
-									<a class='meta_author_avatar' href='/page-author'><img
-											src="<?=BASE_URL?>web/images/author-avatar.png"
-											alt="author details" /></a>
-									<span class="meta_author_name"><a class='author'
-											href='/page-author'>Steven Job</a></span>
-									<span class="meta_categories"><a href="archive.html">Politics</a>, <a
-											href="archive.html">News</a></span>
-									<span class="meta_date">18 Sep, 2023</span>
-								</div>
-							</div>
-						</article>
-						<article class="row section_margin animate-box">
-							<div class="col-md-3 animate-box">
-								<figure class="alith_news_img"><a href='/single'><img
-											src="<?=BASE_URL?>web/images/thumb_medium.png" alt="" /></a>
-								</figure>
-							</div>
-							<div class="col-md-9 animate-box">
-								<h3 class="alith_post_title"><a href='/single'>What you see and what you’re
-										experiencing as you read these</a></h3>
-								<div class="post_meta">
-									<a class='meta_author_avatar' href='/page-author'><img
-											src="<?=BASE_URL?>web/images/author-avatar.png"
-											alt="author details" /></a>
-									<span class="meta_author_name"><a class='author'
-											href='/page-author'>Steven Job</a></span>
-									<span class="meta_categories"><a href="archive.html">Politics</a>, <a
-											href="archive.html">News</a></span>
-									<span class="meta_date">18 Sep, 2023</span>
-								</div>
-							</div>
-						</article>
+							</article>
+						<?php 
+							}
+						}
+						?>
 
 						<div class="site-pagination animate-box">
 							<ul class="page-numbers">
@@ -297,151 +184,113 @@
 							<div class="widget-title-cover">
 								<h4 class="widget-title"><span>Popular Articles</span></h4>
 							</div>
-
 							<?php   							
 							$limit2 = 5;
-							$sql2 = "SELECT ads_id, ads_title, ads_image, ads_date FROM news_ads ORDER BY ads_id DESC LIMIT {$limit2}";
-							$result = mysqli_query($db, $sql2) or die("Query Failed: " . mysqli_error($db));
+							$sidebar = "SELECT * FROM news_posts ORDER BY id DESC LIMIT {$limit2}";
+							$result = mysqli_query($db, $sidebar) or die("Query Failed: " . mysqli_error($db));
 							if(mysqli_num_rows($result) > 0){
     							while($row = mysqli_fetch_assoc($result)){							
 							?>
 							<div class="latest_style_1">
 								<div class="latest_style_1_item">
-									<span class="item-count vertical-align">
-										<!-- 1. 2. 3. 4. 5. last wale post ke no. ke hisab se-->
-										<!-- 1. -->
-									</span>
 									<div class="alith_post_title_small">
-										<a href='/single'><strong><?php echo $row['ads_title']; ?></strong></a>
-										<p class="meta"><span><?php echo $row['ads_date']; ?></span> <span>268 views</span></p>
+										<a href='<?=SITE_URL?>news?id=<?php echo $row['id']; ?>'>
+											<strong><?=$row['news_title']?></strong>
+										</a>
+										<p class="meta"><span><?php echo $row['added_dt']; ?></span> <span>👁️ <?= $row['news_views']; ?> Views</span></p>
 									</div>
-									<figure class="alith_news_img"><img src="uploads/<?php echo $row['ads_image']; ?>" alt="<?php echo $row['ads_title']; ?>"/></figure>
+									<figure class="alith_news_img">
+										<a href='<?=SITE_URL?>news?id=<?php echo $row['id']; ?>'>
+											<img src="<?=NEWS_UPLOAD_URL.$row['news_banner'];?>" alt="<?php echo $row['news_title']; ?>" />
+										</a>
+									</figure>
 								</div>
-							<?php 
+								<?php 
+									}
 								}
+								?>
+							</div> <!--.sidebar-widget-->
+
+							<div class="sidebar-widget animate-box">
+								<div class="widget-title-cover">
+									<h4 class="widget-title"><span>Search</span></h4>
+								</div>
+								<form action="#" class="search-form" method="get" role="search">
+									<label>
+										<input type="search" name="s" value="" placeholder="Search …"
+											class="search-field">
+									</label>
+									<input type="submit" value="Search" class="search-submit">
+								</form>
+							</div> <!--.sidebar-widget-->
+
+							<?php
+								$limit = 4;
+								$trendingQuery = "SELECT id, news_title, news_banner, added_dt, news_views 
+												FROM news_posts 
+												ORDER BY news_views DESC 
+												LIMIT {$limit}";
+
+								$result = mysqli_query($db, $trendingQuery) or die("Query Failed: " . mysqli_error($db));
+
+								if(mysqli_num_rows($result) > 0){
+							?>
+							<div class="sidebar-widget animate-box">
+								<div class="widget-title-cover">
+									<h4 class="widget-title"><span>Trending</span></h4>
+								</div>
+								<div class="latest_style_2">
+									<?php 
+									$count = 0;
+									while($row = mysqli_fetch_assoc($result)) { 
+										if ($count == 0) { // Pehli post (Sabse zyada views wali)
+											?>
+											<div class="latest_style_2_item_first">
+												<figure class="alith_post_thumb_big">
+													<a href='<?=SITE_URL?>news?id=<?= $row['id']; ?>'>
+														<img src="<?= NEWS_UPLOAD_URL . $row['news_banner']; ?>" alt="<?= htmlspecialchars($row['news_title']); ?>" />
+													</a>
+												</figure>
+												<h3 class="alith_post_title">
+													<a href='<?=SITE_URL?>news?id=<?= $row['id']; ?>'>
+														<strong><?= htmlspecialchars($row['news_title']); ?></strong>
+													</a>
+												</h3>
+												<div class="post_meta">
+													<span class="meta_date"><?= $row['added_dt']; ?></span>
+													<span class="meta_views">👁️ <?= $row['news_views']; ?> Views</span>
+												</div>
+											</div>
+											<?php
+										} else { // Baaki 3 posts
+											?>
+											<div class="latest_style_2_item">
+												<figure class="alith_news_img">
+													<a href='<?=SITE_URL?>news?id=<?= $row['id']; ?>'>
+														<img src="<?= NEWS_UPLOAD_URL . $row['news_banner']; ?>" alt="<?= htmlspecialchars($row['news_title']); ?>" />
+													</a>
+												</figure>
+												<h3 class="alith_post_title">
+													<a href='<?=SITE_URL?>news?id=<?= $row['id']; ?>'>
+														<?= htmlspecialchars($row['news_title']); ?>
+													</a>
+												</h3>
+												<div class="post_meta">
+													<span class="meta_date"><?= $row['added_dt']; ?></span>
+													<span class="meta_views">👁️ <?= $row['news_views']; ?> Views</span>
+												</div>
+											</div>
+											<?php
+										}
+										$count++;
+									} 
+									?>
+								</div>
+							</div>
+							<?php 
 							}
 							?>
-							<!-- <div class="latest_style_1">
-								<div class="latest_style_1_item">
-									<span class="item-count vertical-align">1.</span>
-									<div class="alith_post_title_small">
-										<a href='/single'><strong>Anil enim ad minima veniam, quisnostrum</strong></a>
-										<p class="meta"><span>2 Sep, 2023</span> <span>268 views</span></p>
-									</div>
-									<figure class="alith_news_img"><a href='/single'><img
-												src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
-									</figure>
-								</div>
-								<div class="latest_style_1_item">
-									<span class="item-count vertical-align">2.</span>
-									<div class="alith_post_title_small">
-										<a href='/single'><strong>Curae lacinia consec tetur
-												varius</strong></a>
-										<p class="meta"><span>2 Sep, 2023</span> <span>268 views</span></p>
-									</div>
-									<figure class="alith_news_img"><a href='/single'><img
-												src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
-									</figure>
-								</div>
 
-								<div class="latest_style_1_item">
-									<span class="item-count vertical-align">3.</span>
-									<div class="alith_post_title_small">
-										<a href='/single'><strong>Euismod lacus vulpu tate
-												augue</strong></a>
-										<p class="meta"><span>2 Sep, 2023</span> <span>268 views</span></p>
-									</div>
-									<figure class="alith_news_img"><a href='/single'><img
-												src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
-									</figure>
-								</div>
-
-								<div class="latest_style_1_item">
-									<span class="item-count vertical-align">4.</span>
-									<div class="alith_post_title_small">
-										<a href='/single'><strong>Quam mauris lorem erat est
-												euismod</strong></a>
-										<p class="meta"><span>2 Sep, 2023</span> <span>268 views</span></p>
-									</div>
-									<figure class="alith_news_img"><a href='/single'><img
-												src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
-									</figure>
-								</div>
-
-								<div class="latest_style_1_item">
-									<span class="item-count vertical-align">5.</span>
-									<div class="alith_post_title_small">
-										<a href='/single'><strong>Nec eget ince ptos aenean
-												gravida</strong></a>
-										<p class="meta"><span>2 Sep, 2023</span> <span>268 views</span></p>
-									</div>
-									<figure class="alith_news_img"><a href='/single'><img
-												src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
-									</figure>
-								</div>
-							</div> -->
-						</div> <!--.sidebar-widget-->
-
-						<div class="sidebar-widget animate-box">
-							<div class="widget-title-cover">
-								<h4 class="widget-title"><span>Search</span></h4>
-							</div>
-							<form action="#" class="search-form" method="get" role="search">
-								<label>
-									<input type="search" name="s" value="" placeholder="Search …"
-										class="search-field">
-								</label>
-								<input type="submit" value="Search" class="search-submit">
-							</form>
-						</div> <!--.sidebar-widget-->
-
-						<div class="sidebar-widget animate-box">
-							<div class="widget-title-cover">
-								<h4 class="widget-title"><span>Trending</span></h4>
-							</div>
-							<div class="latest_style_2">
-								<div class="latest_style_2_item_first">
-									<figure class="alith_post_thumb_big">
-										<span class="post_meta_categories_label">Legal, Blog</span>
-										<a href='/single'><img src="<?=BASE_URL?>web/images/thumb-large.jpg"
-												alt="" /></a>
-									</figure>
-									<h3 class="alith_post_title">
-										<a href='/single'><strong>Nor again is there anyone who loves or
-												pursues or desires to obtain</strong></a>
-									</h3>
-								</div>
-								<div class="latest_style_2_item">
-									<figure class="alith_news_img"><a href='/single'><img
-												src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
-									</figure>
-									<h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad
-											minim veniam</a></h3>
-									<div class="post_meta">
-										<span class="meta_date">18 Sep, 2023</span>
-									</div>
-								</div>
-								<div class="latest_style_2_item">
-									<figure class="alith_news_img"><a href='/single'><img
-												src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
-									</figure>
-									<h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad
-											minim veniam</a></h3>
-									<div class="post_meta">
-										<span class="meta_date">18 Sep, 2023</span>
-									</div>
-								</div>
-								<div class="latest_style_2_item">
-									<figure class="alith_news_img"><a href='/single'><img
-												src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
-									</figure>
-									<h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad
-											minim veniam</a></h3>
-									<div class="post_meta">
-										<span class="meta_date">18 Sep, 2023</span>
-									</div>
-								</div>
-							</div>
 						</div> <!--sidebar-widget-->
 
 						<div class="sidebar-widget animate-box">
@@ -471,172 +320,251 @@
 
 	</div>
 </div>
-<div class="container-fluid">
-	<div class="container animate-box">
-		<div class="bottom margin-15">
-			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-					<div class="sidebar-widget">
-						<div class="widget-title-cover">
-							<h4 class="widget-title"><span>Most comments</span></h4>
-						</div>
-						<div class="latest_style_3">
-							<div class="latest_style_3_item">
-								<span class="item-count vertical-align">1.</span>
-								<div class="alith_post_title_small">
-									<a href='/single'><strong>Frtuitous spluttered unlike ouch vivid blinked
-											far inside</strong></a>
-								</div>
+<!-- /**
+	*
+	* Bottom Section
+	*
+	* Most comments
+	* Latest
+	* Categories
+	* Instagram
+	* 
+	*/ -->
+	<div class="container-fluid">
+		<div class="container animate-box">
+			<div class="bottom margin-15">
+				<div class="row">
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+						<div class="sidebar-widget">
+							<div class="widget-title-cover">
+								<h4 class="widget-title"><span>Most comments</span></h4>
 							</div>
-							<div class="latest_style_3_item">
-								<span class="item-count vertical-align">2.</span>
-								<div class="alith_post_title_small">
-									<a href='/single'><strong>Against and lantern where a and gnashed
-											nefarious</strong></a>
+							<div class="latest_style_3">
+								<div class="latest_style_3_item">
+									<span class="item-count vertical-align">1.</span>
+									<div class="alith_post_title_small">
+										<a href='/single'><strong>Frtuitous spluttered unlike ouch vivid blinked
+												far inside</strong></a>
+									</div>
 								</div>
-							</div>
-							<div class="latest_style_3_item">
-								<span class="item-count vertical-align">3.</span>
-								<div class="alith_post_title_small">
-									<a href='/single'><strong>Ouch oh alas crud unnecessary invaluable
-											some</strong></a>
+								<div class="latest_style_3_item">
+									<span class="item-count vertical-align">2.</span>
+									<div class="alith_post_title_small">
+										<a href='/single'><strong>Against and lantern where a and gnashed
+												nefarious</strong></a>
+									</div>
 								</div>
-							</div>
-							<div class="latest_style_3_item">
-								<span class="item-count vertical-align">4.</span>
-								<div class="alith_post_title_small">
-									<a href='/single'><strong>And far hey much hello and bashful one save
-											less</strong></a>
+								<div class="latest_style_3_item">
+									<span class="item-count vertical-align">3.</span>
+									<div class="alith_post_title_small">
+										<a href='/single'><strong>Ouch oh alas crud unnecessary invaluable
+												some</strong></a>
+									</div>
+								</div>
+								<div class="latest_style_3_item">
+									<span class="item-count vertical-align">4.</span>
+									<div class="alith_post_title_small">
+										<a href='/single'><strong>And far hey much hello and bashful one save
+												less</strong></a>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-					<div class="sidebar-widget">
-						<div class="widget-title-cover">
-							<h4 class="widget-title"><span>Latest</span></h4>
-						</div>
-						<div class="latest_style_2">
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+						<div class="sidebar-widget">
+							<div class="widget-title-cover">
+								<h4 class="widget-title"><span>Latest</span></h4>
+							</div>
+							<div class="latest_style_2">
+							<?php
+								$limit = 3;
+								$sql_latest = "SELECT id, news_title, news_banner FROM news_posts ORDER BY id DESC LIMIT ?";
+								$stmt_latest = $db->prepare($sql_latest);
+								$stmt_latest->bind_param("i", $limit);
+								$stmt_latest->execute();
+								$result_latest = $stmt_latest->get_result();
+
+								while ($row = $result_latest->fetch_assoc()) {
+							?>
 							<div class="latest_style_2_item">
-								<figure class="alith_news_img"><a href='/single'><img alt=""
-											src="<?=BASE_URL?>web/images/thumb-square.png"
-											class="hover_grey"></a>
+								<figure class="alith_news_img">
+									<a href='<?=SITE_URL?>news?id=<?php echo $row['id']; ?>'>
+										<img alt="<?= htmlspecialchars($row['news_title']); ?>" src="<?= NEWS_UPLOAD_URL . $row['news_banner']; ?>" class="hover_grey">
+									</a>
 								</figure>
-								<h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad minim
-										veniam</a></h3>
+								<h3 class="alith_post_title">
+									<a href='<?=SITE_URL?>news?id=<?php echo $row['id']; ?>'>
+										<?= htmlspecialchars($row['news_title']); ?>
+									</a>
+								</h3>
 							</div>
-							<div class="latest_style_2_item">
-								<figure class="alith_news_img"><a href='/single'><img alt=""
-											src="<?=BASE_URL?>web/images/thumb-square.png"
-											class="hover_grey"></a>
-								</figure>
-								<h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad minim
-										veniam quis </a></h3>
-							</div>
-							<div class="latest_style_2_item">
-								<figure class="alith_news_img"><a href='/single'><img alt=""
-											src="<?=BASE_URL?>web/images/thumb-square.png"
-											class="hover_grey"></a>
-								</figure>
-								<h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad minim
-										veniam quis </a></h3>
-							</div>
+							<?php
+								}
+								$stmt_latest->close();
+							?>
+						</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-					<div class="sidebar-widget">
-						<div class="widget-title-cover">
-							<h4 class="widget-title"><span>Categories</span></h4>
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+						<div class="sidebar-widget">
+							<div class="widget-title-cover">
+								<h4 class="widget-title"><span>Categories</span></h4>
+							</div>
+							<ul class="bottom_menu">
+								<?php
+									$sql = "SELECT * FROM main_categories WHERE post >= 1";
+									$result = mysqli_query($db, $sql) or die("Query Failed.: category");
+
+									if (mysqli_num_rows($result) > 0) {
+										while ($row = $result->fetch_assoc()) {
+											$categoryID = $row['cat_id'];
+											$categoryName = $row['cat_name'];
+											
+											$categoryURL = SITE_URL . "category?cid=" . $categoryID;
+
+											$activeClass = (isset($_GET['category_id']) && $_GET['category_id'] == $categoryID) ? 
+												'class="active" style="background-color: #ffecec5c; border-radius:30px;"' : '';
+											echo "<li $activeClass><a href=\"$categoryURL\" class=\"\"><i class=\"fa fa-angle-right\"></i>&nbsp;&nbsp; $categoryName</a></li>";
+										}
+									}
+								?>
+							</ul>
 						</div>
-						<ul class="bottom_menu">
-							<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp;
-									Business</a></li>
-							<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp;
-									Entertainment</a></li>
-							<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp;
-									Environment</a></li>
-							<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp;
-									Health</a></li>
-							<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp; Life
-									style</a></li>
-							<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp;
-									Politics</a></li>
-							<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp;
-									Technology</a></li>
-							<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp; World</a>
-							</li>
-						</ul>
 					</div>
-				</div>
-				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-					<div class="sidebar-widget">
-						<div class="widget-title-cover">
-							<h4 class="widget-title"><span>Instagram</span></h4>
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+						<div class="sidebar-widget">
+							<div class="widget-title-cover">
+								<h4 class="widget-title"><span>Instagram</span></h4>
+							</div>
+							<ul class="alith-instagram-grid-widget alith-clr alith-row alith-gap-10">
+								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+									<a class="" target="_blank" href="#">
+										<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+									</a>
+								</li>
+								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+									<a class="" target="_blank" href="#">
+										<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+									</a>
+								</li>
+								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+									<a class="" target="_blank" href="#">
+										<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+									</a>
+								</li>
+								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+									<a class="" target="_blank" href="#">
+										<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+									</a>
+								</li>
+								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+									<a class="" target="_blank" href="#">
+										<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+									</a>
+								</li>
+								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+									<a class="" target="_blank" href="#">
+										<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+									</a>
+								</li>
+								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+									<a class="" target="_blank" href="#">
+										<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+									</a>
+								</li>
+								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+									<a class="" target="_blank" href="#">
+										<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+									</a>
+								</li>
+								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+									<a class="" target="_blank" href="#">
+										<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+									</a>
+								</li>
+							</ul>
 						</div>
-						<ul class="alith-instagram-grid-widget alith-clr alith-row alith-gap-10">
-							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-								<a class="" target="_blank" href="#">
-									<img class="" title="" alt=""
-										src="<?=BASE_URL?>web/images/thumb-square.png">
-								</a>
-							</li>
-							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-								<a class="" target="_blank" href="#">
-									<img class="" title="" alt=""
-										src="<?=BASE_URL?>web/images/thumb-square.png">
-								</a>
-							</li>
-							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-								<a class="" target="_blank" href="#">
-									<img class="" title="" alt=""
-										src="<?=BASE_URL?>web/images/thumb-square.png">
-								</a>
-							</li>
-							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-								<a class="" target="_blank" href="#">
-									<img class="" title="" alt=""
-										src="<?=BASE_URL?>web/images/thumb-square.png">
-								</a>
-							</li>
-							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-								<a class="" target="_blank" href="#">
-									<img class="" title="" alt=""
-										src="<?=BASE_URL?>web/images/thumb-square.png">
-								</a>
-							</li>
-							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-								<a class="" target="_blank" href="#">
-									<img class="" title="" alt=""
-										src="<?=BASE_URL?>web/images/thumb-square.png">
-								</a>
-							</li>
-							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-								<a class="" target="_blank" href="#">
-									<img class="" title="" alt=""
-										src="<?=BASE_URL?>web/images/thumb-square.png">
-								</a>
-							</li>
-							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-								<a class="" target="_blank" href="#">
-									<img class="" title="" alt=""
-										src="<?=BASE_URL?>web/images/thumb-square.png">
-								</a>
-							</li>
-							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-								<a class="" target="_blank" href="#">
-									<img class="" title="" alt=""
-										src="<?=BASE_URL?>web/images/thumb-square.png">
-								</a>
-							</li>
-						</ul>
 					</div>
+				</div> <!--.row-->
+			</div>
+		</div>
+</div>
+
+<!-- Modal -->
+<div id="editCarouselModal" class="modal fade" tabindex="-1" aria-labelledby="editCarouselModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<h5 class="modal-title" id="editCarouselModalLabel">Edit Carousel Images</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<!-- Modal Body -->
+			<div class="modal-body">
+				<div class="row">
+					
+					<?php
+						$sql = "SELECT * FROM font_ms";
+						$result = $db->query($sql);
+
+						if ($result->num_rows > 0) {
+							while ($row = $result->fetch_assoc()) {
+					?>
+
+						<div class="col-md-3 mb-4" id="ci<?=$row['ms_id']?>">
+							<div class="card shadow">
+								<div class="card-body">
+									<div style="height:150px; width:100%; text-align:center">
+										<img style="max-height:100%;" src="<?= NEWS_UPLOAD_URL . $row['ms_images'] ?>" alt="Image">
+									</div>
+								</div>
+								<div class="card-footer">
+									<div class="row text-center">
+										<div class="col-6">
+											<form id="frontUploadImageForm<?php echo $row['ms_id'] ?>" method="POST" enctype="multipart/form-data">
+												<label class="btn btn-sm btn-info">
+													<i class="fa fa-edit"></i> Edit
+													<input type="file" name="frontEditImg" class="d-none" onchange="handleFrontEditImg(event, 'frontUploadImageForm<?php echo $row['ms_id'] ?>', '<?php echo $row['ms_id'] ?>')" />
+												</label>
+												<input type="hidden" name="form-name" value="fronteditimg" />
+												<input type="hidden" name="ms_id" value="<?php echo $row['ms_id'] ?>" />
+											</form>
+										</div>
+										<div class="col-6">
+											<button type="button" class="btn btn-sm btn-danger" onclick="deleteCarousalImage(<?=$row['ms_id']?>)">
+												<i class="fa fa-trash"></i> Delete
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					<?php
+							}
+						} else {
+							echo '<p>No images found.</p>';
+						}
+					?>
 				</div>
-			</div> <!--.row-->
+			</div>
+
+			<!-- Modal Footer -->
+			<div class="modal-footer">
+				<!-- Add New Image -->
+				<form id="frontAddImageForm" method="POST" enctype="multipart/form-data">
+					<label class="btn btn-success mb-0">
+						Add New
+						<input type="file" name="frontAddImg" class="d-none" onchange="handleFrontAddImg(event)" />
+					</label>
+					<input type="hidden" name="form-name" value="frontaddimg" />
+				</form>
+
+				<!-- close -->
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			</div>
 		</div>
 	</div>
 </div>
-<?php
-    // include_once("../layouts/footer.php");
-?>

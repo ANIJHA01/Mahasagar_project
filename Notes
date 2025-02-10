@@ -92,3 +92,40 @@ Strategy for Implementing a Commenting:
     2. The form sends data via POST to handle_request.php in the includes folder.
     3. The handle_request.php file identifies the form_name as userComment and email the corresponding function in Comments.php.
     4. The userComment function in Comments.php processes the data and saves it to the article_comments database table.
+
+
+
+Today 02/12/2024 ::
+        Problem
+    Note:
+        Normal point that ki news, post nahi ho rha hai..!  
+        1. Yaha pe koi bhi user log in kar paye, or uska log in data jaye hmare database pe..!
+        2. All users ke lea databasse table kya rahega..?
+
+
+===========================================================
+1600 
+200
+
+
+edit button.
+    butstrap pop up modal (3. images in grid)
+    images edit delete. (Chnage).
+
+    All closing the pop up the page is refrace.
+
+
+
+First ek edit ka button dena hai 
+    Thane us edit pe click ho to bustrap ka file khulna chahiye jisme image ho 
+
+    Or ek db bnayenge jisme waha pe image ko add karenge..
+
+
+    Problem's:
+        1. Yaha pe 3 hi image dikhana hai ye jitne bhi hamare db me honge sbko dikhana hai.
+      
+
+
+        Go and see what changes you done in index.php file in (add).
+    

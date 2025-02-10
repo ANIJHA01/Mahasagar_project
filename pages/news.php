@@ -3,100 +3,99 @@
 	<head>
 		<style>
 			html, body {
-  height: 100%;
-}
+				height: 100%;
+			}
 
-.wrap {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+			.wrap {
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
 
-.button {
-  min-width: 300px;
-  min-height: 60px;
-  display: inline-flex;
-  font-family: 'Nunito', sans-serif;
-  font-size: 22px;
-  align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
-  text-align: center;
-  letter-spacing: 1.3px;
-  font-weight: 700;
-  color: #313133;
-  background: #4FD1C5;
-background: linear-gradient(90deg, rgba(129,230,217,1) 0%, rgba(79,209,197,1) 100%);
-  border: none;
-  border-radius: 1000px;
-  box-shadow: 12px 12px 24px rgba(79,209,197,.64);
-  transition: all 0.3s ease-in-out 0s;
-  cursor: pointer;
-  outline: none;
-  position: relative;
-  padding: 10px;
-  }
+			.button {
+				min-width: 200px;
+				min-height: 50px;
+				display: inline-flex;
+				font-family: 'Nunito', sans-serif;
+				font-size: 22px;
+				align-items: center;
+				justify-content: center;
+				text-transform: uppercase;
+				text-align: center;
+				letter-spacing: 1.3px;
+				font-weight: 700;
+				color: #313133;
+				background: #4FD1C5;
+				background: linear-gradient(90deg, rgba(129,230,217,1) 0%, rgba(79,209,197,1) 100%);
+				border: none;
+				border-radius: 1000px;
+				box-shadow: 12px 12px 24px rgba(79,209,197,.64);
+				transition: all 0.3s ease-in-out 0s;
+				cursor: pointer;
+				outline: none;
+				position: relative;
+				padding: 10px;
+			}
 
-.button::before {
-content: '';
-  border-radius: 1000px;
-  min-width: calc(300px + 12px);
-  min-height: calc(60px + 12px);
-  border: 6px solid #00FFCB;
-  box-shadow: 0 0 60px rgba(0,255,203,.64);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  transition: all .3s ease-in-out 0s;
-}
+			.button::before {
+				content: '';
+				border-radius: 1000px;
+				min-width: calc(300px + 12px);
+				min-height: calc(60px + 12px);
+				border: 6px solid #00FFCB;
+				box-shadow: 0 0 60px rgba(0,255,203,.64);
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				opacity: 0;
+				transition: all .3s ease-in-out 0s;
+			}
 
-.button:hover, 
-.button:focus {
-  color: #313133;
-  transform: translateY(-6px);
-}
+			.button:hover, 
+			.button:focus {
+				color: #313133;
+				transform: translateY(-6px);
+			}
 
-.button:hover::before, 
-.button:focus::before {
-  opacity: 1;
-}
+			.button:hover::before, 
+			.button:focus::before {
+				opacity: 1;
+			}
 
-.button::after {
-  content: '';
-  width: 30px; height: 30px;
-  border-radius: 100%;
-  border: 6px solid #00FFCB;
-  position: absolute;
-  z-index: -1;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: ring 1.5s infinite;
-}
+			.button::after {
+				content: '';
+				width: 30px; height: 30px;
+				border-radius: 100%;
+				border: 6px solid #00FFCB;
+				position: absolute;
+				z-index: -1;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				animation: ring 1.5s infinite;
+			}
 
-.button:hover::after, 
-.button:focus::after {
-  animation: none;
-  display: none;
-}
+			.button:hover::after, 
+			.button:focus::after {
+				animation: none;
+				display: none;
+			}
 
-@keyframes ring {
-  0% {
-    width: 30px;
-    height: 30px;
-    opacity: 1;
-  }
-  100% {
-    width: 300px;
-    height: 300px;
-    opacity: 0;
-  }
-}
+			@keyframes ring {
+			0% {
+				width: 30px;
+				height: 30px;
+				opacity: 1;
+			}
+			100% {
+				width: 300px;
+				height: 300px;
+				opacity: 0;
+			}
+			}
 		</style>
-
 	</head>
 <body>
 
@@ -105,10 +104,44 @@ content: '';
 			<div class="row">
 				<div class="post-header">
 					<div class="bread">
-						<ul class="breadcrumbs" id="breadcrumbs">
+					<ul class="breadcrumbs" id="breadcrumbs">
 							<li class="item-home">You are here: <a class='bread-link bread-home' href='/' title='Home'>Home</a></li>
 							<li class="separator separator-home"> /</li>
-							<li class="item-current item-cat"><a class='bread-link bread-home' href='/' title='Home'>Lifestyle</a></li>
+							<li class="item-current item-cat">
+							<?php
+								global $db;
+								$news_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+								if ($news_id > 0) {
+									$sql = "SELECT main_categories.cat_id, main_categories.cat_name 
+											FROM news_posts 
+											JOIN main_categories ON news_posts.category = main_categories.cat_id 
+											WHERE news_posts.id = ?";
+									
+									$stmt = $db->prepare($sql);
+									$stmt->bind_param("i", $news_id);
+									$stmt->execute();
+									$result = $stmt->get_result();
+
+									if ($result->num_rows > 0) {
+										while ($row = $result->fetch_assoc()) {
+											$categoryID = $row['cat_id'];
+											$categoryName = $row['cat_name'];
+											
+											$categoryURL = SITE_URL . "category?cid=" . $categoryID;
+
+											$activeClass = (isset($_GET['category_id']) && $_GET['category_id'] == $categoryID) ?  : '';
+
+											echo "<li $activeClass><a class='bread-link bread-home' href=\"$categoryURL\">$categoryName</a></li>";
+										}
+									} else {
+										echo '<a class="bread-link bread-home" href="#" title="Categories Dropdown">Unknown Category</a>';
+									}
+
+									$stmt->close();
+								}
+							?>
+							</li>
 							<li class="separator separator-home"> /</li>
 							<li class="item-current item-cat"><strong class="bread-current bread-cat">Simple life in big city</strong></li>
 						</ul>
@@ -132,27 +165,49 @@ content: '';
 								if($row["id"] == $_GET["id"]){
 					?>
 							<!-- img -->
-							<figure class="alith_news_img animate-box"><a href='<?=SITE_URL?>news'><img src="<?=NEWS_UPLOAD_URL.$row['news_banner']?>" alt="No img there" /></a></figure>
+							<figure class="alith_news_img animate-box">
+								<a href='<?=SITE_URL?>news'>
+									<img src="<?=NEWS_UPLOAD_URL.$row['news_banner']?>" alt="No img there" />
+								</a>
+							</figure>
 							<div class="post-content">
 								<div class="single-header">
 								<!-- title -->
 								<h3 class="alith_post_title"><?php echo $row['news_title']; ?></h3>
+								<!-- Author section -->
 								<div class="post_meta">
-									<a class='meta_author_avatar' href='/page-author'><img src="<?=BASE_URL?>web/images/author-avatar.png" alt="author details" /></a>
-									<span class="meta_author_name"><a class='author' href='/page-author'>Steven Job</a></span>
-									<span class="meta_categories"><a href="archive.html">Politics</a>, <a href="archive.html">News</a></span>
-									<span class="meta_date">18 Sep, 2023</span>
+									<a class='meta_author_avatar' href='/page-author'>
+										<img src="<?=BASE_URL?>web/images/author-avatar.png" alt="author details" />
+									</a>
+									<span class="meta_author_name">
+										<a class='author' href='/page-author'>
+											<?php echo $row['page_author']; ?>
+										</a>
+									</span>
+									<span class="meta_categories">
+										<?php
+											$category_id = $row["category"];
+											$category_sql = "SELECT * FROM main_categories WHERE cat_id  = $category_id";
+											$category_result = $db->query($category_sql) or die("Query Failed: " . $db->error);
+											if ($category_result->num_rows > 0) {
+												$category_row = $category_result->fetch_assoc();
+												echo '<a href="archive.html">' . $category_row["cat_name"] . '</a>, ';
+											}
+										?>
+										<a href="archive.html">News</a></span>
+									<span class="meta_date"><?php echo $row["added_dt"]; ?></span>
 								</div>
-				<?php 
+								</div>
+								<div class="single-content animate-box">
+									<p class="alith_post_except animate-box"><?php echo $row["news_description"]; ?></p>
+					<?php 
+								}
 							}
-						}
 						}else{
 							echo "Result not found";
 						}
-						?>
-								</div>
+					?>			</div>
 								<div class="single-content animate-box">
-									<p class="alith_post_except animate-box">Vivamus hac faucibus primis eleifend ligula curabitur phasellus augue, quisque rhoncus purus quam per felis rhoncus viverra bibendum, habitasse sem turpis fermentum</p>
 									<div class="dropcap column-2 animate-box">
 										<p>The lemming hello and hence leapt hello more otter aerially or dear monkey much illustrative bled showed crud fox yikes but spelled far onto nudged some frog and bluebird one surreptitiously ground frenetically much far up rewrote this.</p>
 										<p>And far hey much hello and bashful one save less much goldfish analogically rabbit more hello threw thanks therefore truthful unproductive strenuously <strong>concentric repaid</strong> manifestly and oh between the one jeez and hit terrier dense unwittingly shark versus inscrutably that much fit involuntary a endearingly.</p>
@@ -254,77 +309,77 @@ content: '';
 										</div>
 									</div> <!--post-related and navigation-->
 								</div> <!--single content-->
-								<div class="single-comment">
-									<section id="comments">
-										<h4 class="single-comment-title">Comments</h4>
-										<div class="comments-inner clr">
-											<div class="comments-title">
-												<p>There are 3 comments for this article</p>
-											</div>
-											<ol class="commentlist">
-												<li id="li-comment-4">
-													<article class="comment even thread-even depth-1 clr" id="comment-4">
-														<div class="comment-author vcard"> <img width="60" height="60" src="<?=BASE_URL?>web/images/author-avatar.png" alt=""></div>
-														<div class="comment-details clr ">
-															<header class="comment-meta"> <strong class="fn"> Steven Jobs </strong> <span class="comment-date">July 4, 2017 7:25 am </span></header>
-															<div class="comment-content entry clr">
-																<p>dived wound factual legitimately delightful goodness fit rat some lopsidedly far when.</p>
-															</div>
-															<div class="reply comment-reply-link-div"> <a aria-label="Reply to spadmin" href="#respond" class="comment-reply-link" rel="nofollow">Reply</a></div>
-														</div>
-													</article>
-													<ul class="children">
-														<li id="li-comment-6">
-															<article class="comment odd alt depth-2 clr" id="comment-6">
-																<div class="comment-author vcard"><img width="60" height="60" src="<?=BASE_URL?>web/images/author-avatar.png" alt=""></div>
-																<div class="comment-details clr ">
-																	<header class="comment-meta"> <strong class="fn"> Jim Calist </strong> <span class="comment-date">July 16, 2017 1:29 am </span></header>
-																	<div class="comment-content entry clr">
-																		<p>Slung alongside jeepers hypnotic legitimately some iguana this agreeably triumphant pointedly far</p>
+								<?php
+									include 'includes/config.php';
+
+									$post_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+									$comments = [];
+
+									if ($post_id > 0) {
+										$sql = "SELECT category FROM news_posts WHERE id = ?";
+										$stmt = $db->prepare($sql);
+										$stmt->bind_param("i", $post_id);
+										$stmt->execute();
+										$stmt->bind_result($category);
+										$stmt->fetch();
+										$stmt->close();
+
+										if ($category) {
+											$sql = "SELECT article_name, article_email, article_comment, created_at 
+													FROM article_comments 
+													WHERE news_post_id = ? 
+													ORDER BY created_at DESC"; 
+
+											$stmt = $db->prepare($sql);
+
+											if (!$stmt) {
+												die("<p>SQL Error: " . $db->error . "</p>"); 
+											}
+
+											$stmt->bind_param("i", $post_id); 
+											$stmt->execute();
+											$result = $stmt->get_result();
+
+											while ($row = $result->fetch_assoc()) {
+												$comments[] = $row;
+											}
+
+											$stmt->close();
+										}
+									}
+									?>
+									<!-- Display comments for this post -->
+									<div class="single-comment">
+										<section id="comments">
+											<h4 class="single-comment-title">Comments</h4>
+											<div class="comments-inner clr">
+												<div class="comments-title">
+													<p>There are <?= count($comments) ?> comments for this post</p>
+												</div>
+												<ol class="commentlist">
+													<?php if (!empty($comments)) : ?>
+														<?php foreach ($comments as $comment) : ?>
+															<li>
+																<article class="comment clr">
+																	<div class="comment-author vcard">
+																		<img width="60" height="60" src="<?= BASE_URL ?>web/images/author-avatar.png" alt="">
 																	</div>
-																	<div class="reply comment-reply-link-div"><a aria-label="Reply to spadmin" href="#respond" class="comment-reply-link" rel="nofollow">Reply</a></div>
-																</div>
-															</article>
-														</li>
-													</ul>
-												</li>
-												<li id="li-comment-5">
-													<article class="comment even thread-odd thread-alt depth-1 clr" id="comment-5">
-														<div class="comment-author vcard"> <img width="60" height="60" src="<?=BASE_URL?>web/images/author-avatar.png" alt=""></div>
-														<div class="comment-details clr ">
-															<header class="comment-meta"> <strong class="fn"> Steven Jobs </strong> <span class="comment-date">July 4, 2017 7:25 am </span></header>
-															<div class="comment-content entry clr">
-																<p>jeepers unscrupulous anteater attentive noiseless put less greyhound prior stiff ferret unbearably cracked oh.</p>
-															</div>
-															<div class="reply comment-reply-link-div"><a aria-label="Reply to spadmin" href="#respond" class="comment-reply-link" rel="nofollow">Reply</a></div>
-														</div>
-													</article>
-												</li>
-												<li id="li-comment-85">
-													<article class="comment byuser comment-author-spadmin bypostauthor odd alt thread-even depth-1 clr" id="comment-85">
-														<div class="comment-author vcard"><img width="60" height="60" src="<?=BASE_URL?>web/images/author-avatar.png" alt=""></div>
-														<div class="comment-details clr ">
-															<header class="comment-meta"> <strong class="fn"> Steven Jobs <span class="author-badge"></span> </strong> <span class="comment-date">May 10, 2023 2:41 am </span></header>
-															<div class="comment-content entry clr">
-																<p>So sparing more goose caribou wailed went conveniently burned the the the and that save that adroit gosh and sparing armadillo grew some overtook that magnificently that</p>
-															</div>
-															<div class="reply comment-reply-link-div"><a aria-label="Reply to spadmin" href="#respond" class="comment-reply-link" rel="nofollow">Reply</a></div>
-														</div>
-													</article>
-												</li>
-												<li id="li-comment-86">
-													<article class="comment byuser comment-author-spadmin bypostauthor even thread-odd thread-alt depth-1 clr" id="comment-86">
-														<div class="comment-author vcard"><img width="60" height="60" src="<?=BASE_URL?>web/images/author-avatar.png" alt=""></div>
-														<div class="comment-details clr ">
-															<header class="comment-meta"> <strong class="fn"> Steven Jobs <span class="author-badge"></span> </strong> <span class="comment-date">May 10, 2023 2:42 am </span></header>
-															<div class="comment-content entry clr">
-																<p>Circuitous gull and messily squirrel on that banally assenting nobly some much rakishly goodness that the darn abject hello left because unaccountably spluttered unlike a aurally since contritely thanks</p>
-															</div>
-															<div class="reply comment-reply-link-div"><a aria-label="Reply to spadmin" href="#respond" class="comment-reply-link" rel="nofollow">Reply</a></div>
-														</div>
-													</article>
-												</li>
-											</ol> <!--comment list-->
+																	<div class="comment-details clr">
+																		<header class="comment-meta">
+																			<strong class="fn"><?= htmlspecialchars($comment['article_name']) ?></strong>
+																			<span class="comment-date"><?= date("F j, Y g:i a", strtotime($comment['created_at'])) ?></span>
+																		</header>
+																		<div class="comment-content entry clr">
+																			<p><?= htmlspecialchars($comment['article_comment']) ?></p>
+																		</div>
+																	</div>
+																</article>
+															</li>
+														<?php endforeach; ?>
+													<?php else : ?>
+														<p>No comments found for this post.</p>
+													<?php endif; ?>
+												</ol><!--comment list-->
 											<nav role="navigation" class="comment-navigation clr">
 												<div class="nav-previous span_1_of_2 col col-1"></div>
 												<div class="nav-next span_1_of_2 col"> <a href="#comments">Newer Comments →</a></div>
@@ -345,26 +400,19 @@ content: '';
 													<div class="row">
 														<div class="comment-form-author col-sm-12 col-md-6"> 
 															<label for="author">Name (optional)</label> 
-															<input type="text" size="30" value="" placeholder="Your name *" name="author" id="author">
+															<input type="text" size="30" value="" placeholder="Your name *" name="artical_name" id="author">
 														</div>
 														<div class="comment-form-email col-sm-12 col-md-6"> 
 															<label for="email">Email (optional)</label> 
-															<input type="email" size="30" value="" placeholder="Email *" name="email" id="email">
+															<input type="email" size="30" value="" placeholder="Email *" name="artical_email" id="email">
 														</div>
 													</div>
 													<div class="comment-form-comment">
 														<label for="comment">Comment</label>
-														<textarea aria-required="true" placeholder="Your Comment" rows="8" cols="45" name="comment" id="comment" aria-required></textarea>
+														<textarea aria-required="true" placeholder="Your Comment" rows="8" cols="45" name="artical_comment" id="comment" aria-required></textarea>
 													</div>
-													<div class="wrap">
-														<a href='<?= SITE_URL ?>comment?id=<?php echo $row["id"]; ?>'>
-															<button type="submit" value="Post Comment" class="button" name="submit">Post Comment</button>
-														</a>
-													</div>
-
-													<input type="hidden" id="comment_post_ID" value="80" name="comment_post_ID"> 
-													<input type="hidden" value="0" id="comment_parent" name="comment_parent">
-												</form> 
+													<input type="submit" class="button" name="form-name"  value="artical_comment"/>
+												</form>
 											</div> 
 										</div>
 									</section>
@@ -393,64 +441,32 @@ content: '';
 								<div class="widget-title-cover">
 									<h4 class="widget-title"><span>Popular Articles</span></h4>
 								</div>
+								<?php   							
+									$limit2 = 5;
+									$sidebar = "SELECT * FROM news_posts ORDER BY id DESC LIMIT {$limit2}";
+									$result = mysqli_query($db, $sidebar) or die("Query Failed: " . mysqli_error($db));
+									if(mysqli_num_rows($result) > 0){
+										while($row = mysqli_fetch_assoc($result)){							
+								?>
 								<div class="latest_style_1">
 									<div class="latest_style_1_item">
-										<span class="item-count vertical-align">1.</span>
 										<div class="alith_post_title_small">
-											<a href='/single'><strong>Ut enim ad minima veniam, quis
-													nostrum</strong></a>
-											<p class="meta"><span>2 Sep, 2023</span> <span>268 views</span></p>
+											<a href='<?=SITE_URL?>news?id=<?php echo $row['id']; ?>'>
+												<strong><?=$row['news_title']?></strong>
+											</a>
+											<p class="meta"><span><?php echo $row['added_dt']; ?></span> <span>👁️ <?= $row['news_views']; ?> Views</span></p>
 										</div>
-										<figure class="alith_news_img"><a href='/single'><img
-											src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
+										<figure class="alith_news_img">
+											<a href='<?=SITE_URL?>news?id=<?php echo $row['id']; ?>'>
+												<img src="<?=NEWS_UPLOAD_URL.$row['news_banner'];?>" alt="<?php echo $row['news_title']; ?>" />
+											</a>
 										</figure>
 									</div>
-									<div class="latest_style_1_item">
-										<span class="item-count vertical-align">2.</span>
-										<div class="alith_post_title_small">
-											<a href='/single'><strong>Curae lacinia consec tetur
-													varius</strong></a>
-											<p class="meta"><span>2 Sep, 2023</span> <span>28 views</span></p>
-										</div>
-										<figure class="alith_news_img"><a href='/single'><img
-											src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
-										</figure>
-									</div>
-									<div class="latest_style_1_item">
-										<span class="item-count vertical-align">3.</span>
-										<div class="alith_post_title_small">
-											<a href='/single'><strong>Euismod lacus vulpu tate
-													augue</strong></a>
-											<p class="meta"><span>2 Aug, 2023</span> <span>18 views</span></p>
-										</div>
-										<figure class="alith_news_img"><a href='/single'><img
-											src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
-										</figure>
-									</div>
-									<div class="latest_style_1_item">
-										<span class="item-count vertical-align">4.</span>
-										<div class="alith_post_title_small">
-											<a href='/single'><strong>Quam mauris lorem erat est
-													euismod</strong></a>
-											<p class="meta"><span>21 Aug, 2023</span> <span>18 views</span></p>
-										</div>
-										<figure class="alith_news_img"><a href='/single'><img
-											src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
-										</figure>
-									</div>
-									<div class="latest_style_1_item">
-										<span class="item-count vertical-align">5.</span>
-										<div class="alith_post_title_small">
-											<a href='/single'><strong>Nec eget ince ptos aenean
-													gravida</strong></a>
-											<p class="meta"><span>21 Jun, 2023</span> <span>18 views</span></p>
-										</div>
-										<figure class="alith_news_img"><a href='/single'><img
-													src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
-										</figure>
-									</div>
-								</div>
-							</div> <!--.sidebar-widget-->
+									<?php 
+										}
+									}
+									?>
+								</div> <!--.sidebar-widget-->
 
 							<div class="sidebar-widget animate-box">
 								<div class="widget-title-cover">
@@ -465,54 +481,72 @@ content: '';
 								</form>
 							</div> <!--.sidebar-widget-->
 
+							<?php
+								$limit = 4;
+								$trendingQuery = "SELECT id, news_title, news_banner, added_dt, news_views 
+												FROM news_posts 
+												ORDER BY news_views DESC 
+												LIMIT {$limit}";
+
+								$result = mysqli_query($db, $trendingQuery) or die("Query Failed: " . mysqli_error($db));
+
+								if(mysqli_num_rows($result) > 0){
+							?>
 							<div class="sidebar-widget animate-box">
 								<div class="widget-title-cover">
 									<h4 class="widget-title"><span>Trending</span></h4>
 								</div>
 								<div class="latest_style_2">
-									<div class="latest_style_2_item_first">
-										<figure class="alith_post_thumb_big">
-											<span class="post_meta_categories_label">Legal, Blog</span>
-											<a href='/single'><img src="<?=BASE_URL?>web/images/thumb-large.jpg"
-													alt="" /></a>
-										</figure>
-										<h3 class="alith_post_title">
-											<a href='/single'><strong>Nor again is there anyone who loves or
-													pursues or desires to obtain</strong></a>
-										</h3>
-									</div>
-									<div class="latest_style_2_item">
-										<figure class="alith_news_img"><a href='/single'><img
-													src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
-										</figure>
-										<h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad
-												minim veniam</a></h3>
-										<div class="post_meta">
-											<span class="meta_date">18 Sep, 2023</span>
-										</div>
-									</div>
-									<div class="latest_style_2_item">
-										<figure class="alith_news_img"><a href='/single'><img
-													src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
-										</figure>
-										<h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad
-												minim veniam</a></h3>
-										<div class="post_meta">
-											<span class="meta_date">18 Sep, 2023</span>
-										</div>
-									</div>
-									<div class="latest_style_2_item">
-										<figure class="alith_news_img"><a href='/single'><img
-													src="<?=BASE_URL?>web/images/thumb-square.png" alt="" /></a>
-										</figure>
-										<h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad
-												minim veniam</a></h3>
-										<div class="post_meta">
-											<span class="meta_date">18 Sep, 2023</span>
-										</div>
-									</div>
+									<?php 
+									$count = 0;
+									while($row = mysqli_fetch_assoc($result)) { 
+										if ($count == 0) { // Pehli post (Sabse zyada views wali)
+											?>
+											<div class="latest_style_2_item_first">
+												<figure class="alith_post_thumb_big">
+													<a href='<?=SITE_URL?>news?id=<?= $row['id']; ?>'>
+														<img src="<?= NEWS_UPLOAD_URL . $row['news_banner']; ?>" alt="<?= htmlspecialchars($row['news_title']); ?>" />
+													</a>
+												</figure>
+												<h3 class="alith_post_title">
+													<a href='<?=SITE_URL?>news?id=<?= $row['id']; ?>'>
+														<strong><?= htmlspecialchars($row['news_title']); ?></strong>
+													</a>
+												</h3>
+												<div class="post_meta">
+													<span class="meta_date"><?= $row['added_dt']; ?></span>
+													<span class="meta_views">👁️ <?= $row['news_views']; ?> Views</span>
+												</div>
+											</div>
+											<?php
+										} else { // Baaki 3 posts
+											?>
+											<div class="latest_style_2_item">
+												<figure class="alith_news_img">
+													<a href='<?=SITE_URL?>news?id=<?= $row['id']; ?>'>
+														<img src="<?= NEWS_UPLOAD_URL . $row['news_banner']; ?>" alt="<?= htmlspecialchars($row['news_title']); ?>" />
+													</a>
+												</figure>
+												<h3 class="alith_post_title">
+													<a href='<?=SITE_URL?>news?id=<?= $row['id']; ?>'>
+														<?= htmlspecialchars($row['news_title']); ?>
+													</a>
+												</h3>
+												<div class="post_meta">
+													<span class="meta_date"><?= $row['added_dt']; ?></span>
+													<span class="meta_views">👁️ <?= $row['news_views']; ?> Views</span>
+												</div>
+											</div>
+											<?php
+										}
+										$count++;
+									} 
+									?>
 								</div>
-							</div> <!--.sidebar-widget-->
+							</div>
+							<?php 
+							}
+							?>
 
 							<!-- <div class="sidebar-widget animate-box">
 								<div class="widget-title-cover">
@@ -541,166 +575,175 @@ content: '';
 
 		</div>
 	</div>
-	<div class="container-fluid">
-		<div class="container animate-box">
-			<div class="bottom margin-15">
-				<div class="row">
-					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-						<div class="sidebar-widget">
-							<div class="widget-title-cover">
-								<h4 class="widget-title"><span>Most comments</span></h4>
+	<!-- /**
+		*
+		* Bottom Section
+		*
+		* Most comments
+		* Latest
+		* Categories
+		* Instagram
+		* 
+	*/ -->
+<div class="container-fluid">
+	<div class="container animate-box">
+		<div class="bottom margin-15">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+					<div class="sidebar-widget">
+						<div class="widget-title-cover">
+							<h4 class="widget-title"><span>Most comments</span></h4>
+						</div>
+						<div class="latest_style_3">
+							<div class="latest_style_3_item">
+								<span class="item-count vertical-align">1.</span>
+								<div class="alith_post_title_small">
+									<a href='/single'><strong>Frtuitous spluttered unlike ouch vivid blinked
+											far inside</strong></a>
+								</div>
 							</div>
-							<div class="latest_style_3">
-								<div class="latest_style_3_item">
-									<span class="item-count vertical-align">1.</span>
-									<div class="alith_post_title_small">
-										<a href='/single'><strong>Frtuitous spluttered unlike ouch vivid blinked
-												far inside</strong></a>
-									</div>
+							<div class="latest_style_3_item">
+								<span class="item-count vertical-align">2.</span>
+								<div class="alith_post_title_small">
+									<a href='/single'><strong>Against and lantern where a and gnashed
+											nefarious</strong></a>
 								</div>
-								<div class="latest_style_3_item">
-									<span class="item-count vertical-align">2.</span>
-									<div class="alith_post_title_small">
-										<a href='/single'><strong>Against and lantern where a and gnashed
-												nefarious</strong></a>
-									</div>
+							</div>
+							<div class="latest_style_3_item">
+								<span class="item-count vertical-align">3.</span>
+								<div class="alith_post_title_small">
+									<a href='/single'><strong>Ouch oh alas crud unnecessary invaluable
+											some</strong></a>
 								</div>
-								<div class="latest_style_3_item">
-									<span class="item-count vertical-align">3.</span>
-									<div class="alith_post_title_small">
-										<a href='/single'><strong>Ouch oh alas crud unnecessary invaluable
-												some</strong></a>
-									</div>
-								</div>
-								<div class="latest_style_3_item">
-									<span class="item-count vertical-align">4.</span>
-									<div class="alith_post_title_small">
-										<a href='/single'><strong>And far hey much hello and bashful one save
-												less</strong></a>
-									</div>
+							</div>
+							<div class="latest_style_3_item">
+								<span class="item-count vertical-align">4.</span>
+								<div class="alith_post_title_small">
+									<a href='/single'><strong>And far hey much hello and bashful one save
+											less</strong></a>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-						<div class="sidebar-widget">
-							<div class="widget-title-cover">
-								<h4 class="widget-title"><span>Latest</span></h4>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+					<div class="sidebar-widget">
+						<div class="widget-title-cover">
+							<h4 class="widget-title"><span>Latest</span></h4>
+						</div>
+						<div class="latest_style_2">
+							<?php
+								$limit = 3;
+								$sql_latest = "SELECT id, news_title, news_banner FROM news_posts ORDER BY id DESC LIMIT ?";
+								$stmt_latest = $db->prepare($sql_latest);
+								$stmt_latest->bind_param("i", $limit);
+								$stmt_latest->execute();
+								$result_latest = $stmt_latest->get_result();
+
+								while ($row = $result_latest->fetch_assoc()) {
+							?>
+							<div class="latest_style_2_item">
+								<figure class="alith_news_img">
+									<a href='<?=SITE_URL?>news?id=<?php echo $row['id']; ?>'>
+										<img alt="<?= htmlspecialchars($row['news_title']); ?>" src="<?= NEWS_UPLOAD_URL . $row['news_banner']; ?>" class="hover_grey">
+									</a>
+								</figure>
+								<h3 class="alith_post_title">
+									<a href='<?=SITE_URL?>news?id=<?php echo $row['id']; ?>'>
+										<?= htmlspecialchars($row['news_title']); ?>
+									</a>
+								</h3>
 							</div>
-							<div class="latest_style_2">
-								<div class="latest_style_2_item">
-									<figure class="alith_news_img"><a href='/single'><img alt=""
-												src="<?=BASE_URL?>web/images/thumb-square.png" class="hover_grey"></a>
-									</figure>
-									<h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad minim
-											veniam</a></h3>
-								</div>
-								<div class="latest_style_2_item">
-									<figure class="alith_news_img"><a href='/single'><img alt=""
-												src="<?=BASE_URL?>web/images/thumb-square.png" class="hover_grey"></a>
-									</figure>
-									<h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad minim
-											veniam</a></h3>
-								</div>
-								<div class="latest_style_2_item">
-									<figure class="alith_news_img"><a href='/single'><img alt=""
-												src="<?=BASE_URL?>web/images/thumb-square.png" class="hover_grey"></a>
-									</figure>
-									<h3 class="alith_post_title"><a href='/single'>Magna aliqua ut enim ad minim
-											veniam</a></h3>
-								</div>
-							</div>
+							<?php
+								}
+								$stmt_latest->close();
+							?>
 						</div>
 					</div>
-					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-						<div class="sidebar-widget">
-							<div class="widget-title-cover">
-								<h4 class="widget-title"><span>Categories</span></h4>
-							</div>
-							<ul class="bottom_menu">
-								<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp;
-										Business</a></li>
-								<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp;
-										Entertainment</a></li>
-								<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp;
-										Environment</a></li>
-								<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp;
-										Health</a></li>
-								<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp; Life
-										style</a></li>
-								<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp;
-										Politics</a></li>
-								<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp;
-										Technology</a></li>
-								<li><a href="#" class=""><i class="fa fa-angle-right"></i>&nbsp;&nbsp; World</a>
-								</li>
-							</ul>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+					<div class="sidebar-widget">
+						<div class="widget-title-cover">
+							<h4 class="widget-title"><span>Categories</span></h4>
 						</div>
+						<ul class="bottom_menu">
+							<?php
+								$sql = "SELECT * FROM main_categories WHERE post >= 1";
+								$result = mysqli_query($db, $sql) or die("Query Failed.: category");
+
+								if (mysqli_num_rows($result) > 0) {
+									while ($row = $result->fetch_assoc()) {
+										$categoryID = $row['cat_id'];
+										$categoryName = $row['cat_name'];
+										
+										$categoryURL = SITE_URL . "category?cid=" . $categoryID;
+
+										$activeClass = (isset($_GET['category_id']) && $_GET['category_id'] == $categoryID) ? 
+											'class="active" style="background-color: #ffecec5c; border-radius:30px;"' : '';
+										echo "<li $activeClass><a href=\"$categoryURL\" class=\"\"><i class=\"fa fa-angle-right\"></i>&nbsp;&nbsp; $categoryName</a></li>";
+									}
+								}
+							?>
+						</ul>
 					</div>
-					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-						<div class="sidebar-widget">
-							<div class="widget-title-cover">
-								<h4 class="widget-title"><span>Instagram</span></h4>
-							</div>
-							<ul class="alith-instagram-grid-widget alith-clr alith-row alith-gap-10">
-								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-									<a class="" target="_blank" href="#">
-										<img class="" title="" alt="" src="<?=BASE_URL?>web/images/thumb-square.png">
-									</a>
-								</li>
-								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-									<a class="" target="_blank" href="#">
-										<img class="" title="" alt="" src="<?=BASE_URL?>web/images/thumb-square.png">
-									</a>
-								</li>
-								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-									<a class="" target="_blank" href="#">
-										<img class="" title="" alt="" src="<?=BASE_URL?>web/images/thumb-square.png">
-									</a>
-								</li>
-								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-									<a class="" target="_blank" href="#">
-										<img class="" title="" alt="" src="<?=BASE_URL?>web/images/thumb-square.png">
-									</a>
-								</li>
-								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-									<a class="" target="_blank" href="#">
-										<img class="" title="" alt="" src="<?=BASE_URL?>web/images/thumb-square.png">
-									</a>
-								</li>
-								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-									<a class="" target="_blank" href="#">
-										<img class="" title="" alt="" src="<?=BASE_URL?>web/images/thumb-square.png">
-									</a>
-								</li>
-								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-									<a class="" target="_blank" href="#">
-										<img class="" title="" alt="" src="<?=BASE_URL?>web/images/thumb-square.png">
-									</a>
-								</li>
-								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-									<a class="" target="_blank" href="#">
-										<img class="" title="" alt="" src="<?=BASE_URL?>web/images/thumb-square.png">
-									</a>
-								</li>
-								<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
-									<a class="" target="_blank" href="#">
-										<img class="" title="" alt="" src="<?=BASE_URL?>web/images/thumb-square.png">
-									</a>
-								</li>
-							</ul>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+					<div class="sidebar-widget">
+						<div class="widget-title-cover">
+							<h4 class="widget-title"><span>Instagram</span></h4>
 						</div>
+						<ul class="alith-instagram-grid-widget alith-clr alith-row alith-gap-10">
+							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+								<a class="" target="_blank" href="#">
+									<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+								</a>
+							</li>
+							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+								<a class="" target="_blank" href="#">
+									<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+								</a>
+							</li>
+							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+								<a class="" target="_blank" href="#">
+									<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+								</a>
+							</li>
+							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+								<a class="" target="_blank" href="#">
+									<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+								</a>
+							</li>
+							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+								<a class="" target="_blank" href="#">
+									<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+								</a>
+							</li>
+							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+								<a class="" target="_blank" href="#">
+									<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+								</a>
+							</li>
+							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+								<a class="" target="_blank" href="#">
+									<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+								</a>
+							</li>
+							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+								<a class="" target="_blank" href="#">
+									<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+								</a>
+							</li>
+							<li class="wow fadeInUp alith-col-nr alith-clr alith-col-3 animated">
+								<a class="" target="_blank" href="#">
+									<img class="" title="" alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png">
+								</a>
+							</li>
+						</ul>
 					</div>
-				</div> <!--.row-->
-			</div>
+				</div>
+			</div> <!--.row-->
 		</div>
 	</div>
-
-	<?php
-		// include_once("../layouts/footer.php");
-	?>
-
-
-
+</div>
 </body>
 </html>

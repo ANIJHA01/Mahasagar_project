@@ -10,7 +10,6 @@
     }
 
 /* Upload img btn */
- /* Style container to resemble a button */
     .upload-container {
         width: 180px;
         height: 50px;
@@ -71,22 +70,6 @@
         height: 100%;
         width: 100%;
         opacity: 0;
-    }
-
-/* image delete */
-    #bannerAdImagedelete{
-        position: absolute;
-        top: 25px;
-        right: 60px;
-        width: 30px;
-        height: 30px;
-        border-radius: 100%;
-        box-shadow: rgba(0, 255, 187, 0.844) 0px 2px 4px 0px, rgba(234, 0, 255, 0.844) 0px 2px 16px 0px;
-        overflow: hidden;
-        transition: all 1s;
-    }
-    #bannerAdImagedelete:hover{
-        box-shadow: rgba(4, 0, 255, 0.844) 0px 2px 4px 0px, rgba(0, 225, 255, 0.844) 0px 2px 16px 0px;
     }
 
 

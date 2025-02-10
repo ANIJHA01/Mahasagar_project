@@ -408,12 +408,12 @@ input[type="color"],
     -moz-box-sizing: border-box;
     -o-box-sizing: border-box;
     box-sizing: border-box;
-    border: 1px solid #fff;
-    color: #888;
+    /* border: 1px solid #fff; */
+    /* color: #888; */
     width: 100%;
-    font-size: 12px;
+    /* font-size: 12px; */
     font-weight: 400;
-    height: 50px;
+    /* height: 50px; */
     line-height: 30px;
     outline: none;
     padding: 10px;
