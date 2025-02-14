@@ -382,7 +382,7 @@ text-transform: uppercase;
 #slideshow_face .post_meta_center {
 	border-right: 1px solid #eee;
 	color: #888;
-	margin-right: 50px;
+	margin-right: 100px;
 	padding-right: 30px;
 	text-align: center;
 	font-size: 12px;
@@ -1732,7 +1732,7 @@ ol.commentlist li article:hover a.comment-reply-link {
 }
 .comment-form textarea,
 .comment-form input {
-	border: 1px solid #000;
+	border: 1px solid #00ffe7;
 	color: #000;
 	font-size: 14px;
 	margin: 0 0 20px;

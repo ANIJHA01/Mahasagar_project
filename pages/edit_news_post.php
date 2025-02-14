@@ -171,29 +171,133 @@
                                     }
                                 ?>
                                                     <div class="single-content animate-box" style="border:1px dotted black; padding:10px; margin-top:10px">
-                                                        <label class="btn btn-sm btn-info">
+                                                        <!-- Edit Button -->
+                                                        <label class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#textEditorModal">
                                                             <i class="fa fa-edit"></i> Edit
                                                         </label>
-                                                        <div class="dropcap column-2 animate-box">
-                                                            <p>The lemming hello and hence leapt hello more otter aerially or dear monkey much illustrative bled showed crud fox yikes but spelled far onto nudged some frog and bluebird one surreptitiously ground frenetically much far up rewrote this.</p>
-                                                            <p>And far hey much hello and bashful one save less much goldfish analogically rabbit more hello threw thanks therefore truthful unproductive strenuously <strong>concentric repaid</strong> manifestly and oh between the one jeez and hit terrier dense unwittingly shark versus inscrutably that much fit involuntary a endearingly.</p>
-                                                            <p> <img alt="" src="https://cc-prod.scene7.com/is/image/CCProdAuthor/d-03-4?$pjpeg$&jpegSize=200&wid=720"></p>
-                                                            <p>Knew opposite sped hey insect wow interminable telepathic far oh this to one goldfinch some under chose attractively a<em> yet clenched one less prodigious amenably far one inset much much that hound gosh goodness articulate</em> spitefully ape repeatedly yikes that drooled glumly some romantic lion far far wow woolly a some one meant self-consciously pangolin poorly until a dizzily morbid house.</p>
-                                                            <p>Pellentesque neque nulla cubilia enim consequat eleifend, taciti nec aenean vehicula congue dolor etiam, ornare morbi class tristique quisque mattis augue tempus semper venenatis donec ipsum cras dapibus elit, ut fusce rhoncus senectus sit lectus tristique cursus convallis</p>
-                                                            <p>Vivamus hac faucibus primis eleifend ligula curabitur phasellus augue, quisque rhoncus purus quam per felis rhoncus viverra bibendum, habitasse sem turpis fermentum morbi ut diam elit vestibulum consectetur suscipit pellentesque commodo dictumst potenti gravida libero donec in, non tristique orci habitant ipsum diam himenaeos</p>
-                                                            <p>Ouch much until in ahead until much scallop obliquely expansive experimentally daintily more regardless wherever conjointly overslept elegant then wow extrinsically irrespective imminently and ladybug cynic hawk between a guffawed as coaxingly strictly blubbered meant much pending overheard and eagle meanly jeez untiring jeez past well far realistic on mounted a by.</p>
-                                                            <p>Frtuitous spluttered unlike ouch vivid blinked far inside under far the wild one wasp nightingale spluttered wide otter crud lemming aside about and python until.</p>
-                                                            <p>Against and lantern where a and gnashed nefarious far rigorous cheerfully much far owing funny lusty cantankerous<a href="#"> until much</a> dire some deliberate close condescendingly tarantula angelfish glum shut a dipped wow that jeepers much and shut discarded this.</p>
-                                                            <p>Ouch oh alas crud unnecessary invaluable some goodness opposite hello since audacious far <em>barring and</em> absurdly much boa until read porpoise grouped the scooped the lied save minutely gosh much this outside and much snorted dear eel resold callously flinched smoothly.</p>
-                                                            <h2>Sample Heading</h2>
-                                                            <p>Close unthinking darn as darn between naked beyond seriously guiltily chameleon and that fish lent alas spuriously winced and shuddered unlocked more some gosh darn the trustfully talkative goodness indubitably single-mindedly ouch astride.</p>
-                                                            <p>Freshly turtle took toward more much notably fearlessly resolutely tastefully thus far some hello amazingly well overthrew far youthfully where stiffly below mongoose ordered dizzy the some far cosmetically much cuddled far oh this much darn one much much cuckoo ungracefully underneath because snarling less.</p>
-                                                        </div>                                              
+                                                        <?php
+                                                            include 'includes/config.php';
+
+                                                        $news_id = isset($_GET['id']) ? intval($_GET['id']) : null;
+
+                                                        if ($news_id) {
+                                                            $stmt = $db->prepare("SELECT news_content FROM news_posts WHERE id = ?");
+                                                            $stmt->bind_param("i", $news_id);
+                                                            $stmt->execute();
+                                                            $stmt->bind_result($news_content);
+                                                            $stmt->fetch();
+                                                            $stmt->close();
+                                                        } else {
+                                                            $news_content = "No content available!"; 
+                                                        }
+                                                        ?>
+                                                        <div class="text-editor-content" contenteditable="true">
+                                                            <?= $news_content; ?>
+                                                        </div>                                        
                                                     </div>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="textEditorModal" tabindex="-1" aria-labelledby="textEditorModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                                                            <div class="modal-content" style="background: #c9c9c9;color: #ffd6e7;">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="textEditorModalLabel">Aj Editor</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body" id="text-editor-modal">
+                                                                    <form method="POST" action=" ">
+                                                                        <div class="text-editor-container">
+                                                                            <div class="text-editor-toolbar">
+                                                                                <div class="text-editor-head">
+                                                                                    <select class="animation" onchange="fileHandle(this.value); this.selectedIndex=0">
+                                                                                        <option value="" selected="" hidden="" disabled="">File</option>
+                                                                                        <option value="new">New file</option>
+                                                                                        <option value="txt">Save as txt</option>
+                                                                                        <option value="pdf">Save as pdf</option>
+                                                                                    </select>
+                                                                                    <select class="animation" onchange="formatDoc('formatBlock', this.value); this.selectedIndex=0;">
+                                                                                        <option value="" selected="" hidden="" disabled="">Format</option>
+                                                                                        <option value="h1">Heading 1</option>
+                                                                                        <option value="h2">Heading 2</option>
+                                                                                        <option value="h3">Heading 3</option>
+                                                                                        <option value="h4">Heading 4</option>
+                                                                                        <option value="h5">Heading 5</option>
+                                                                                        <option value="h6">Heading 6</option>
+                                                                                        <option value="p">Paragraph</option>
+                                                                                    </select>
+                                                                                    <select class="animation" onchange="formatDoc('fontSize', this.value); this.selectedIndex=0;">
+                                                                                        <option value="" selected="" hidden="" disabled="">Font size</option>
+                                                                                        <option value="1">Extra small</option>
+                                                                                        <option value="2">Small</option>
+                                                                                        <option value="3">Regular</option>
+                                                                                        <option value="4">Medium</option>
+                                                                                        <option value="5">Large</option>
+                                                                                        <option value="6">Extra Large</option>
+                                                                                        <option value="7">Big</option>
+                                                                                    </select> 
+                                                                                    <div class="color animation">
+                                                                                        <span>Color</span>
+                                                                                        <input type="color" oninput="formatDoc('foreColor', this.value); this.value='#000000';">
+                                                                                    </div>
+                                                                                    <div class="color animation">
+                                                                                        <span>Background</span>
+                                                                                        <input type="color" oninput="formatDoc('hiliteColor', this.value); this.value='#000000';">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="btn-toolbar">
+                                                                                    <button type="button" onclick="formatDoc('undo')"><i class='bx bx-undo' ></i></button>
+                                                                                    <button type="button" onclick="formatDoc('redo')"><i class='bx bx-redo' ></i></button>
+                                                                                    <button type="button" onclick="formatDoc('bold')"><i class='bx bx-bold'></i></button>
+                                                                                    <button type="button" onclick="formatDoc('underline')"><i class='bx bx-underline' ></i></button>
+                                                                                    <button type="button" onclick="formatDoc('italic')"><i class='bx bx-italic' ></i></button>
+                                                                                    <button type="button" onclick="formatDoc('strikeThrough')"><i class='bx bx-strikethrough' ></i></button>
+                                                                                    <button type="button" onclick="formatDoc('justifyLeft')"><i class='bx bx-align-left' ></i></button>
+                                                                                    <button type="button" onclick="formatDoc('justifyCenter')"><i class='bx bx-align-middle' ></i></button>
+                                                                                    <button type="button" onclick="formatDoc('justifyRight')"><i class='bx bx-align-right' ></i></button>
+                                                                                    <button type="button" onclick="formatDoc('justifyFull')"><i class='bx bx-align-justify' ></i></button>
+                                                                                    <button type="button" onclick="formatDoc('insertOrderedList')"><i class='bx bx-list-ol' ></i></button>
+                                                                                    <button type="button" onclick="formatDoc('insertUnorderedList')"><i class='bx bx-list-ul' ></i></button>
+                                                                                    <button type="button" onclick="addLink()"><i class='bx bx-link' ></i></button>
+                                                                                    <button type="button" onclick="formatDoc('unlink')"><i class='bx bx-unlink' ></i></button>
+                                                                                    <button type="button" id="show-code" data-active="false">&lt;/&gt;</button>
+                                                                                    <button type="button" onclick="document.getElementById('imageUpload').click()"><i class='bx bxs-image-add' ></i></button>
+                                                                                    <input type="file" id="imageUpload" accept="image/*" style="display:none;" onchange="insertImage(this)">
+                                                                                    <!-- New table button -->
+                                                                                </div>
+                                                                                <button type="button" class="aj-button" onclick="insertTable()"><i class="bx bx-table"></i> Table</button>
+                                                                            </div>
+                                                                            <input type="hidden" name="Cname" id="hiddenContent">
+                                                                            <?php
+                                                                                include 'includes/config.php'; 
+
+                                                                            $news_id = isset($_GET['id']) ? intval($_GET['id']) : null;
+
+                                                                            if ($news_id) {
+                                                                                $stmt = $db->prepare("SELECT news_content FROM news_posts WHERE id = ?");
+                                                                                $stmt->bind_param("i", $news_id);
+                                                                                $stmt->execute();
+                                                                                $stmt->bind_result($news_content);
+                                                                                $stmt->fetch();
+                                                                                $stmt->close();
+                                                                            } else {
+                                                                                $news_content = "No content available!"; 
+                                                                            }
+                                                                            ?>
+                                                                            <div id="text-editor-content" contenteditable="true" name="Cname">
+                                                                                <?= $news_content; ?>
+                                                                            </div>
+                                                                            <input type="hidden" id="ajEditorId" value="">
+                                                                            <input type="submit" class="btn btn-primary m-2" value="Submit" onclick="ajTextEditor()">
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Modal end-->
                                                 </div>
                                     </article>
                                     <div class="single-more-articles single-disable-inview">
-                                        <h4><span>You might be interested in</span></h4>
+                                        <h4><span>196 edit_news_post You might be interested in</span></h4>
                                         <span class="single-more-articles-close-button"><i class="fa fa-times" aria-hidden="true"></i></span>
                                         <div class="latest_style_2">
                                             <div class="latest_style_2_item">

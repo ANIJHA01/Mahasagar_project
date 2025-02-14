@@ -3,7 +3,8 @@
 		<div class="row main-header">
 			<div class="owl-carousel owl-theme js carausel slider section_margin" id="slider-small">
 				<?php
-					$sql = "SELECT * FROM news_posts ORDER BY id DESC";
+					$limit = 8;
+					$sql = "SELECT * FROM news_posts ORDER BY id DESC LIMIT {$limit}";
 					$result = mysqli_query($db, $sql) or die("Query Failed: " . mysqli_error($db));
 					if(mysqli_num_rows($result) > 0){
 						while($row = mysqli_fetch_assoc($result)){
@@ -23,8 +24,8 @@
 							</div>
 							<?php if(isset($_SESSION["user_id"]) && isset($_SESSION["role"]) && $_SESSION["role"] == 1) { ?>
 							<div class="recent-page-btn">
-								 	<div class="RecentPageView">
-									 	<a href='<?=SITE_URL?>news?id=<?php echo $row["id"]; ?>'>
+									<div class="RecentPageView">
+										<a href='<?=SITE_URL?>news?id=<?php echo $row["id"]; ?>'>
 											<button class="addImgBtn"><i class="bi bi-eye"></i></button>
 										</a>
 									</div>						
@@ -65,7 +66,7 @@
 						</button>
 					<?php } ?>
 					<?php 
-					
+
 						$sql = "SELECT * FROM news_posts ORDER BY id DESC";
 						$result = mysqli_query($db, $sql) or die("Query Failed:" . mysqli_error($db));
 						if(mysqli_num_rows($result)>0){
@@ -182,14 +183,14 @@
 					<div class="sidebar_right">
 						<div class="sidebar-widget animate-box">
 							<div class="widget-title-cover">
-								<h4 class="widget-title"><span>Popular Articles</span></h4>
+								<h4 class="widget-title"><span>home Popular Articles</span></h4>
 							</div>
 							<?php   							
 							$limit2 = 5;
-							$sidebar = "SELECT * FROM news_posts ORDER BY id DESC LIMIT {$limit2}";
+							$sidebar = "SELECT * FROM news_posts ORDER BY news_views DESC LIMIT {$limit2}";
 							$result = mysqli_query($db, $sidebar) or die("Query Failed: " . mysqli_error($db));
 							if(mysqli_num_rows($result) > 0){
-    							while($row = mysqli_fetch_assoc($result)){							
+								while($row = mysqli_fetch_assoc($result)){							
 							?>
 							<div class="latest_style_1">
 								<div class="latest_style_1_item">
@@ -215,14 +216,17 @@
 								<div class="widget-title-cover">
 									<h4 class="widget-title"><span>Search</span></h4>
 								</div>
-								<form action="#" class="search-form" method="get" role="search">
+								<form action="#" method="get" role="search">
 									<label>
-										<input type="search" name="s" value="" placeholder="Search …"
-											class="search-field">
+										<input type="search" name="s" value="" placeholder="Search…" class="" style="box-shadow: 2px 2px 20px rgb(220, 220, 220);border-radius: 100px;display: flex;align-items: center;border: 1px solid white;justify-content: center;">
 									</label>
-									<input type="submit" value="Search" class="search-submit">
+									<button type="submit" class="search-submit" style="position: absolute;left: 390px;border-radius: 100%;bottom: 12px; background: white;">
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+											<path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+										</svg>
+									</button>
 								</form>
-							</div> <!--.sidebar-widget-->
+							</div> 
 
 							<?php
 								$limit = 4;

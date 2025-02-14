@@ -62,7 +62,6 @@ class ArticalCommentController{
     }
 
     public function articalcomment() {
-
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['status'] = "You must be logged in to post a comment.";
             $_SESSION['status_code'] = "error";
@@ -89,14 +88,15 @@ class ArticalCommentController{
     
         $categorie_id = (int) $category_result["result"][0]["category"]; 
     
-        $query = "INSERT INTO article_comments (news_post_id, article_name, article_email, article_comment, categorie_id)
-                  VALUES ($news_post_id, '$name', '$email', '$comment', $categorie_id);";
+        // Insert comment with 'pending' status
+        $query = "INSERT INTO article_comments (news_post_id, article_name, article_email, article_comment, categorie_id, status, created_at)
+                  VALUES ($news_post_id, '$name', '$email', '$comment', $categorie_id, 'pending', NOW());";
     
         $response = json_decode($this->execute_db_query($query), true);
     
         if ($response["status"] == true) {
-            $_SESSION['status'] = "Comment Added Successfully!";
-            $_SESSION['status_code'] = "success";
+            $_SESSION['status'] = "Your comment is under review.";
+            $_SESSION['status_code'] = "info";
             header("Location: /mahasagar-prj3/news?id=$news_post_id&status=1");
             exit();
         } else {

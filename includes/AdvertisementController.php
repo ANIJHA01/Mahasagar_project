@@ -110,11 +110,11 @@ class AdvertisementController {
         }
         $title = isset($_POST['ads_title']) ? $this->sanitize($_POST['ads_title']) : '';
         $content = isset($_POST['ads_content']) ? $this->sanitize($_POST['ads_content']) : '';
-        $page-author = isset($_POST['page-author']) ? $this->sanitize($_POST['page-author']) : '';
+        $page_author = isset($_POST['page-author']) ? $this->sanitize($_POST['page-author']) : '';
         $status = 1;
 
         $query = "INSERT INTO news_ads(ads_title, ads_content, ads_image, page-author, ads_status)
-        VALUES('{$title}', '{$content}', '{$file_name}', '{$page-author}', '{$status}');";
+        VALUES('{$title}', '{$content}', '{$file_name}', '{$page_author}', '{$status}');";
         $response = json_decode($this->execute_db_query($query), true);
 
         if ($response["status"] == true) {

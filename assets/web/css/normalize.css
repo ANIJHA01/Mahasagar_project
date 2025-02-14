@@ -377,7 +377,7 @@ select {
     font-weight: normal;
     height: 40px;
     padding: 8px 12px;
-    width: 100%;
+    /* width: 100%; */
 }
 label {
     color: #000000;

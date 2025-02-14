@@ -172,59 +172,65 @@
 							</figure>
 							<div class="post-content">
 								<div class="single-header">
-								<!-- title -->
-								<h3 class="alith_post_title"><?php echo $row['news_title']; ?></h3>
-								<!-- Author section -->
-								<div class="post_meta">
-									<a class='meta_author_avatar' href='/page-author'>
-										<img src="<?=BASE_URL?>web/images/author-avatar.png" alt="author details" />
-									</a>
-									<span class="meta_author_name">
-										<a class='author' href='/page-author'>
-											<?php echo $row['page_author']; ?>
+									<!-- title -->
+									<h3 class="alith_post_title"><?php echo $row['news_title']; ?></h3>
+									<!-- Author section -->
+									<div class="post_meta">
+										<a class='meta_author_avatar' href='/page-author'>
+											<img src="<?=BASE_URL?>web/images/author-avatar.png" alt="author details" />
 										</a>
-									</span>
-									<span class="meta_categories">
-										<?php
-											$category_id = $row["category"];
-											$category_sql = "SELECT * FROM main_categories WHERE cat_id  = $category_id";
-											$category_result = $db->query($category_sql) or die("Query Failed: " . $db->error);
-											if ($category_result->num_rows > 0) {
-												$category_row = $category_result->fetch_assoc();
-												echo '<a href="archive.html">' . $category_row["cat_name"] . '</a>, ';
-											}
-										?>
-										<a href="archive.html">News</a></span>
-									<span class="meta_date"><?php echo $row["added_dt"]; ?></span>
-								</div>
+										<span class="meta_author_name">
+											<a class='author' href='/page-author'>
+												<?php echo $row['page_author']; ?>
+											</a>
+										</span>
+										<span class="meta_categories">
+											<?php
+												$category_id = $row["category"];
+												$category_sql = "SELECT * FROM main_categories WHERE cat_id  = $category_id";
+												$category_result = $db->query($category_sql) or die("Query Failed: " . $db->error);
+												if ($category_result->num_rows > 0) {
+													$category_row = $category_result->fetch_assoc();
+													echo '<a href="archive.html">' . $category_row["cat_name"] . '</a>, ';
+												}
+											?>
+											<a href="archive.html">News</a></span>
+										<span class="meta_date"><?php echo $row["added_dt"]; ?></span>
+									</div>
 								</div>
 								<div class="single-content animate-box">
 									<p class="alith_post_except animate-box"><?php echo $row["news_description"]; ?></p>
-					<?php 
-								}
-							}
-						}else{
-							echo "Result not found";
-						}
-					?>			</div>
+									<?php 
+												}
+											}
+										}else{
+											echo "Result not found";
+										}
+									?>		
+								</div>
 								<div class="single-content animate-box">
-									<div class="dropcap column-2 animate-box">
-										<p>The lemming hello and hence leapt hello more otter aerially or dear monkey much illustrative bled showed crud fox yikes but spelled far onto nudged some frog and bluebird one surreptitiously ground frenetically much far up rewrote this.</p>
-										<p>And far hey much hello and bashful one save less much goldfish analogically rabbit more hello threw thanks therefore truthful unproductive strenuously <strong>concentric repaid</strong> manifestly and oh between the one jeez and hit terrier dense unwittingly shark versus inscrutably that much fit involuntary a endearingly.</p>
-										<p> <img alt="" src="<?=BASE_URL?>web/images/thumb_medium.png"></p>
-										<p>Knew opposite sped hey insect wow interminable telepathic far oh this to one goldfinch some under chose attractively a<em> yet clenched one less prodigious amenably far one inset much much that hound gosh goodness articulate</em> spitefully ape repeatedly yikes that drooled glumly some romantic lion far far wow woolly a some one meant self-consciously pangolin poorly until a dizzily morbid house.</p>
-										<p>Pellentesque neque nulla cubilia enim consequat eleifend, taciti nec aenean vehicula congue dolor etiam, ornare morbi class tristique quisque mattis augue tempus semper venenatis donec ipsum cras dapibus elit, ut fusce rhoncus senectus sit lectus tristique cursus convallis</p>
-										<p>Vivamus hac faucibus primis eleifend ligula curabitur phasellus augue, quisque rhoncus purus quam per felis rhoncus viverra bibendum, habitasse sem turpis fermentum morbi ut diam elit vestibulum consectetur suscipit pellentesque commodo dictumst potenti gravida libero donec in, non tristique orci habitant ipsum diam himenaeos</p>
-										<p>Ouch much until in ahead until much scallop obliquely expansive experimentally daintily more regardless wherever conjointly overslept elegant then wow extrinsically irrespective imminently and ladybug cynic hawk between a guffawed as coaxingly strictly blubbered meant much pending overheard and eagle meanly jeez untiring jeez past well far realistic on mounted a by.</p>
-										<blockquote>
-											<p>Jeez secure hound python slit one began indubitably much owing cackled however fabulous leapt dully across hey around due that fumed invaluably came tranquilly one jeez salamander.</p>
-										</blockquote>
-										<p>Frtuitous spluttered unlike ouch vivid blinked far inside under far the wild one wasp nightingale spluttered wide otter crud lemming aside about and python until.</p>
-										<p>Against and lantern where a and gnashed nefarious far rigorous cheerfully much far owing funny lusty cantankerous<a href="#"> until much</a> dire some deliberate close condescendingly tarantula angelfish glum shut a dipped wow that jeepers much and shut discarded this.</p>
-										<p>Ouch oh alas crud unnecessary invaluable some goodness opposite hello since audacious far <em>barring and</em> absurdly much boa until read porpoise grouped the scooped the lied save minutely gosh much this outside and much snorted dear eel resold callously flinched smoothly.</p>
-										<h2>Sample Heading</h2>
-										<p>Close unthinking darn as darn between naked beyond seriously guiltily chameleon and that fish lent alas spuriously winced and shuddered unlocked more some gosh darn the trustfully talkative goodness indubitably single-mindedly ouch astride.</p>
-										<p>Freshly turtle took toward more much notably fearlessly resolutely tastefully thus far some hello amazingly well overthrew far youthfully where stiffly below mongoose ordered dizzy the some far cosmetically much cuddled far oh this much darn one much much cuckoo ungracefully underneath because snarling less.</p>
+									<?php
+										include 'includes/config.php'; // Ensure you have database connection
+
+									// Get the news_id from URL
+									$news_id = isset($_GET['id']) ? intval($_GET['id']) : null;
+
+									if ($news_id) {
+										// Prepare SQL Query to Fetch Content
+										$stmt = $db->prepare("SELECT news_content FROM news_posts WHERE id = ?");
+										$stmt->bind_param("i", $news_id);
+										$stmt->execute();
+										$stmt->bind_result($news_content);
+										$stmt->fetch();
+										$stmt->close();
+									} else {
+										$news_content = "No content available!"; // If no ID is found
+									}
+									?>
+
+									<!-- Display the news content inside the div -->
+									<div class="text-editor-content">
+										<?= $news_content; ?>
 									</div>
 									<div class="post-tags">
 										<div class="post-tags-inner">
@@ -312,6 +318,9 @@
 								<?php
 									include 'includes/config.php';
 
+									error_reporting(E_ALL);
+									ini_set('display_errors', 1);
+
 									$post_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 									$comments = [];
 
@@ -325,10 +334,19 @@
 										$stmt->close();
 
 										if ($category) {
-											$sql = "SELECT article_name, article_email, article_comment, created_at 
-													FROM article_comments 
-													WHERE news_post_id = ? 
-													ORDER BY created_at DESC"; 
+											$role = isset($_SESSION['role']) ? $_SESSION['role'] : 0;
+
+											if ($role == 1) {
+												$sql = "SELECT id, article_name, article_email, article_comment, created_at, status 
+														FROM article_comments 
+														WHERE news_post_id = ? 
+														ORDER BY created_at DESC"; 
+											} else {
+												$sql = "SELECT id, article_name, article_email, article_comment, created_at 
+														FROM article_comments 
+														WHERE news_post_id = ? AND status = 'approved' 
+														ORDER BY created_at DESC"; 
+											}
 
 											$stmt = $db->prepare($sql);
 
@@ -337,7 +355,10 @@
 											}
 
 											$stmt->bind_param("i", $post_id); 
-											$stmt->execute();
+											if (!$stmt->execute()) {
+												die("SQL Error: " . $stmt->error);
+											}
+
 											$result = $stmt->get_result();
 
 											while ($row = $result->fetch_assoc()) {
@@ -348,41 +369,56 @@
 										}
 									}
 									?>
-									<!-- Display comments for this post -->
-									<div class="single-comment">
-										<section id="comments">
-											<h4 class="single-comment-title">Comments</h4>
-											<div class="comments-inner clr">
-												<div class="comments-title">
-													<p>There are <?= count($comments) ?> comments for this post</p>
-												</div>
-												<ol class="commentlist">
-													<?php if (!empty($comments)) : ?>
-														<?php foreach ($comments as $comment) : ?>
-															<li>
-																<article class="comment clr">
-																	<div class="comment-author vcard">
-																		<img width="60" height="60" src="<?= BASE_URL ?>web/images/author-avatar.png" alt="">
+								<!-- Display comments for this post -->
+								<div class="single-comment">
+									<section id="comments">
+										<h4 class="single-comment-title">Comments</h4>
+										<div class="comments-inner clr">
+											<div class="comments-title">
+												<p>There are <?= count($comments) ?> comments for this post</p>
+											</div>
+											<ol class="commentlist">
+												<?php if (!empty($comments)) : ?>
+													<?php foreach ($comments as $comment) : ?>
+														<li>
+															<article class="comment clr">
+																<div class="comment-author vcard">
+																	<img width="60" height="60" src="<?= BASE_URL ?>web/images/author-avatar.png" alt="">
+																</div>
+																<div class="comment-details clr">
+																	<header class="comment-meta">
+																		<strong class="fn"><?= htmlspecialchars($comment['article_name']) ?></strong>
+																		<span class="comment-date"><?= date("F j, Y g:i a", strtotime($comment['created_at'])) ?></span>
+																		<?php if ($role == 1) : ?>
+																			<span class="comment-status">
+																				(<?= $comment['status'] == 'approved' ? '✅ Approved' : '⏳ Pending' ?>)
+																			</span>
+																		<?php endif; ?>
+																	</header>
+																	<div class="comment-content entry clr">
+																		<p><?= htmlspecialchars($comment['article_comment']) ?></p>
 																	</div>
-																	<div class="comment-details clr">
-																		<header class="comment-meta">
-																			<strong class="fn"><?= htmlspecialchars($comment['article_name']) ?></strong>
-																			<span class="comment-date"><?= date("F j, Y g:i a", strtotime($comment['created_at'])) ?></span>
-																		</header>
-																		<div class="comment-content entry clr">
-																			<p><?= htmlspecialchars($comment['article_comment']) ?></p>
+
+																	<!-- Admin can approve or delete comments -->
+																	<?php if ($role == 1) : ?>
+																		<div class="comment-actions">
+																			<?php if ($comment['status'] == 'pending') : ?>
+																				<button class="comment-show-btn" onclick="approveComment(<?= $comment['id'] ?>)">✅ Approve</button>
+																			<?php endif; ?>
+																				<button class="comment-show-btn" onclick="deleteComment(<?= $comment['id'] ?>)">❌ Delete</button>
 																		</div>
-																	</div>
-																</article>
-															</li>
-														<?php endforeach; ?>
-													<?php else : ?>
-														<p>No comments found for this post.</p>
-													<?php endif; ?>
-												</ol><!--comment list-->
+																	<?php endif; ?>
+																</div>
+															</article>
+														</li>
+													<?php endforeach; ?>
+												<?php else : ?>
+													<p>No comments found for this post.</p>
+												<?php endif; ?>
+											</ol><!--comment list-->
 											<nav role="navigation" class="comment-navigation clr">
 												<div class="nav-previous span_1_of_2 col col-1"></div>
-												<div class="nav-next span_1_of_2 col"> <a href="#comments">Newer Comments →</a></div>
+												<div class="nav-next span_1_of_2 col"> <a href="#comments">Comments →</a></div>
 											</nav> <!--comment nav-->
 											<div class="comment-respond" id="respond">
 												<h3 class="comment-reply-title" id="reply-title">Leave a Reply 
@@ -416,11 +452,11 @@
 											</div> 
 										</div>
 									</section>
-								</div>
+								</div> <!--  end comment -->
 							</div>
 						</article>
 						<div class="single-more-articles single-disable-inview">
-							<h4><span>You might be interested in</span></h4>
+							<h4><span>423news.php You might be interested in</span></h4>
 							<span class="single-more-articles-close-button"><i class="fa fa-times" aria-hidden="true"></i></span>
 							<div class="latest_style_2">
 								<div class="latest_style_2_item">
@@ -439,7 +475,7 @@
 						<div class="sidebar_right">
 							<div class="sidebar-widget animate-box">
 								<div class="widget-title-cover">
-									<h4 class="widget-title"><span>Popular Articles</span></h4>
+									<h4 class="widget-title"><span>news.php Popular Articles</span></h4>
 								</div>
 								<?php   							
 									$limit2 = 5;

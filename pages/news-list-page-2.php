@@ -132,35 +132,41 @@
 				<aside class="col-md-4">
 					<div class="sidebar_right">
 						<div class="sidebar-widget animate-box">
+							<!-- Reset pointer and Display Popular Articles -->
+							<?php
+								$posts_result->data_seek(0);  // Reset the result pointer
+							?>
 							<div class="widget-title-cover">
-								<h4 class="widget-title"><span>Popular Articles</span></h4>
+								<h4 class="widget-title"><span>news-list Popular Articles</span></h4>
 							</div>
-							<?php   							
-									$limit2 = 5;
-									$sidebar = "SELECT * FROM news_posts ORDER BY id DESC LIMIT {$limit2}";
-									$result = mysqli_query($db, $sidebar) or die("Query Failed: " . mysqli_error($db));
-									if(mysqli_num_rows($result) > 0){
-										while($row = mysqli_fetch_assoc($result)){							
-								?>
+							<?php
+								$sql_posts = "SELECT * FROM news_posts WHERE category = ? ORDER BY news_views DESC LIMIT 4";
+								$stmt_posts = $db->prepare($sql_posts);
+								$stmt_posts->bind_param("i", $category_id);
+								$stmt_posts->execute();
+								$posts_result = $stmt_posts->get_result();
+							?>
+
+							<?php while ($post = $posts_result->fetch_assoc()) { ?>
 								<div class="latest_style_1">
 									<div class="latest_style_1_item">
 										<div class="alith_post_title_small">
-											<a href='<?=SITE_URL?>news?id=<?php echo $row['id']; ?>'>
-												<strong><?=$row['news_title']?></strong>
+											<a href='<?=SITE_URL?>news?id=<?php echo $post['id']; ?>'>
+												<strong><?=$post['news_title']?></strong>
 											</a>
-											<p class="meta"><span><?php echo $row['added_dt']; ?></span> <span>👁️ <?= $row['news_views']; ?> Views</span></p>
+											<p class="meta">
+												<span><?php echo $post['added_dt']; ?></span> 
+												<span>👁️ <?= $post['news_views']; ?> Views</span>
+											</p>
 										</div>
 										<figure class="alith_news_img">
-											<a href='<?=SITE_URL?>news?id=<?php echo $row['id']; ?>'>
-												<img src="<?=NEWS_UPLOAD_URL.$row['news_banner'];?>" alt="<?php echo $row['news_title']; ?>" />
+											<a href='<?=SITE_URL?>news?id=<?php echo $post['id']; ?>'>
+												<img src="<?=NEWS_UPLOAD_URL.$post['news_banner'];?>" alt="<?php echo $post['news_title']; ?>" />
 											</a>
 										</figure>
 									</div>
-									<?php 
-										}
-									}
-									?>
 								</div> <!--.sidebar-widget-->
+							<?php } ?>
 
 						<div class="sidebar-widget animate-box">
 							<div class="widget-title-cover">
@@ -438,6 +444,3 @@
 		</div>
 	</div>
 </div>
-<?php
-    // include_once("../layouts/footer.php");
-?>
