@@ -4,7 +4,7 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         session_start();
-        if ($_SESSION['user_role'] != 1) {
+        if ($_SESSION['role'] != 1) {
             die("Unauthorized access");
         }
 
